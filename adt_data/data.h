@@ -1,4 +1,6 @@
+//Header Data.h
 #include "boolean.h"
+#include "mystring.h"
 #ifndef DATA_H
 #define DATA_H
 
@@ -10,7 +12,7 @@
  * Peringatan: Nama pengguna harus unik!!!!
 */
 typedef struct {
-	string nama;
+	String nama;
 	int score;
 	int time;
 }Data;
@@ -42,16 +44,16 @@ boolean IsTableEmpty(tabData T);
 boolean IsTabFull(tabData T);
 //Menghasilkan true jika tabel penuh
 
-boolean IsMemberData(tabData T, string nama);
+boolean IsMemberData(tabData T, String nama);
 //Menghasilkan true jika pengguna dengan nama tersebut sudah ada di tabel
 
 //***** Penambahan dan penghapusan pengguna *******/
-boolean addPengguna(tabData *T, string nama, int score, int time, int jmlPemain);
+boolean addPengguna(tabData *T, String nama, int score, int time, int jmlPemain);
 /* Menambahkan data pengguna ke dalam tabel. Tabel mungkin penuh. Jika 
  * data berhasil ditambahkan ke tabel menghasilkan true
  */
 
-boolean delPengguna(tabData *T, string nama);
+boolean delPengguna(tabData *T, String nama);
 /* Menghapus pengguna dengan nama pengguna dari tabel.
  */
 
@@ -62,6 +64,6 @@ void sortScoreDesc(tabData *T);
  */
 
 //****** Fungsi-Fungsi lainnya *****/
-string intToWaktu(int waktu);
+String intToWaktu(int waktu);
 //Mengkonversi waktu menjadi string dengan format yyyy-mm-dd<spasi>hh:mm
 #endif
