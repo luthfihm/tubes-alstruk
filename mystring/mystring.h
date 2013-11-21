@@ -1,7 +1,7 @@
 #ifndef MYSTRING_H
 #define MYSTRING_H
 
-#include "boolean.h"
+#include "../boolean.h"
 
 /* Konstanta */
 #define Nil 0
