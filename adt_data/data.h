@@ -18,9 +18,9 @@ typedef struct {
 }Data;
 
 typedef struct{
-	Data TI[MaxPlayer];
+	Data TI[MaxPlayer+1];
 	int jumlahPemain;
-}tabData[MaxPlayer];
+}tabData;
 
 //Konstruktor
 void CreateEmptyData(tabData *T);
