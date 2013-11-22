@@ -10,6 +10,7 @@
 
 /* ****** Definisi Tipe Data **********
  * Peringatan: Nama pengguna harus unik!!!!
+ * Indeks pertama dimulai dari 1
 */
 typedef struct {
 	String nama;
@@ -18,7 +19,7 @@ typedef struct {
 }Data;
 
 typedef struct{
-	Data TI[MaxPlayer+1];
+	Data TI[MaxPlayer + 1];
 	int jumlahPemain;
 }tabData;
 
@@ -27,13 +28,13 @@ void CreateEmptyData(tabData *T);
 //Menghasilkan T yang kosong
 
 // ******** Load dan Save Data ***********
-int loadData(tabData *T, string lokasi);
+int loadData(tabData *T, String lokasi);
 /* Meload data ke tabel. Menghasilkan 0 jika berhasil.
  * Pesan error:	* 422: Invalid Format
  * 				* 404: File Not Found atau Access denied
  */
  
-int saveData(tabData T, string lokasi);
+int saveData(tabData T, String lokasi);
 /* Mensave tabel ke file. Return 0 jika berhasil, 1 jika gagal
  */
 
@@ -48,9 +49,9 @@ boolean IsMemberData(tabData T, String nama);
 //Menghasilkan true jika pengguna dengan nama tersebut sudah ada di tabel
 
 //***** Penambahan dan penghapusan pengguna *******/
-boolean addPengguna(tabData *T, String nama, int score, int time, int jmlPemain);
+boolean addPengguna(tabData *T, String nama, int score, int time);
 /* Menambahkan data pengguna ke dalam tabel. Tabel mungkin penuh. Jika 
- * data berhasil ditambahkan ke tabel menghasilkan true
+ * data berhasil ditambahkan ke tabel menghasilkan true. Nama harus dicek terlebih dahulu keunikannya
  */
 
 boolean delPengguna(tabData *T, String nama);
@@ -64,6 +65,6 @@ void sortScoreDesc(tabData *T);
  */
 
 //****** Fungsi-Fungsi lainnya *****/
-String intToWaktu(int waktu);
+char* intToWaktu(int waktu);
 //Mengkonversi waktu menjadi string dengan format yyyy-mm-dd<spasi>hh:mm
 #endif
