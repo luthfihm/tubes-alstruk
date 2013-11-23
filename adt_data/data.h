@@ -1,6 +1,7 @@
 //Header Data.h
 #include "boolean.h"
 #include "mystring.h"
+#include <time.h>
 #ifndef DATA_H
 #define DATA_H
 
@@ -9,13 +10,16 @@
 
 
 /* ****** Definisi Tipe Data **********
- * Peringatan: Nama pengguna harus unik!!!!
- * Indeks pertama dimulai dari 1
+ * Peringatan: Nama pengguna harus unik!!!! Setiap melakukan add user cek terlebih dahulu
+ * apakah sudah ada pengguna dengan nama yang sama
+ * 
+ * Indeks pertama tabel dimulai dari 1
 */
+
 typedef struct {
-	String nama;
-	int score;
-	int time;
+	String nama; //nama pengguna
+	int score; //highscore
+	time_t time; //last played
 }Data;
 
 typedef struct{
@@ -49,7 +53,7 @@ boolean IsMemberData(tabData T, String nama);
 //Menghasilkan true jika pengguna dengan nama tersebut sudah ada di tabel
 
 //***** Penambahan dan penghapusan pengguna *******/
-boolean addPengguna(tabData *T, String nama, int score, int time);
+boolean addPengguna(tabData *T, String nama, int score, time_t time);
 /* Menambahkan data pengguna ke dalam tabel. Tabel mungkin penuh. Jika 
  * data berhasil ditambahkan ke tabel menghasilkan true. Nama harus dicek terlebih dahulu keunikannya
  */
@@ -65,6 +69,9 @@ void sortScoreDesc(tabData *T);
  */
 
 //****** Fungsi-Fungsi lainnya *****/
-char* intToWaktu(int waktu);
-//Mengkonversi waktu menjadi string dengan format yyyy-mm-dd<spasi>hh:mm
+void intToWaktu(time_t waktu, String output);
+/* I.S.: variable waktu merepresentasikan waktu sekarang
+ * F.S.: Output berisi konversi variabel waktu ke string 
+ * dengan format yyyy-mm-dd<spasi>hh:mm
+ */
 #endif

@@ -49,7 +49,7 @@ boolean IsMemberData(tabData T, String nama)
 	}
 }
 
-boolean addPengguna(tabData *T, String nama, int score, int time)
+boolean addPengguna(tabData *T, String nama, int score, time_t time)
 /* Menambahkan data pengguna ke dalam tabel. Tabel mungkin penuh. Jika 
  * data berhasil ditambahkan ke tabel menghasilkan true. Nama harus dicek terlebih dahulu keunikannya
  */
@@ -109,4 +109,18 @@ void sortScoreDesc(tabData *T)
 			
 		}
 	}	
+}
+
+void intToWaktu(time_t waktu, String output)
+//Mengkonversi waktu menjadi string dengan format yyyy-mm-dd<spasi>hh:mm
+{
+	//Kamus
+	struct tm * decodedTime;
+
+	
+	//Program
+	decodedTime = localtime(&waktu);
+	strftime(output, MaxLength, "%F %R", decodedTime);
+	
+	
 }
