@@ -1,321 +1,593 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * */
+/* ADT Board v0.6			 					 */
+/* By Muntaha Ilmi 13512048  					 */
+/* Body 					 					 */
+/* Mengatur Board. Melingkupi pencetakan Board,  */
+/* Taruh kartu, viewmap, dan pengecekan kondisi  */
+/* deadlock/win	untuk Saboteur/Goldminer		 */
+/* * * * * * * * * * * * * * * * * * * * * * * * */
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "Board.h"
 
-int Card_Open[10][15]; /* Isi dari kartu yang ditaruh */
-int Card_Around[10][15]; /* kartu sebelah kosong/tdk */
-int Card_Able[10][15]; /* Jalan mana aja yang kebuka */
-int MoveY[]={1,0,-1,0};
-int MoveX[]={0,1,0,-1};
+/* Things to do : 
+	port ke linux.
+		buat print board hanya pada init, 2 parameter, Posisi kiri atas board.
+		ganti semua printf("\n") jadi goto.
+	Buat setiap kali putcard, hanya printcard, tambah 2 parameter, posisi kartu print
+*/
 
-/* Viewmap, Put disebelah goalcard, randomize goalcard, IsWin (pake bool aja), Goalcard kebuka */
-/* Rencana goalcard:
-	Card < 0 = goalcard 
-	-1 = Batu (tutup)
-	-2 = Emas (tutup)
-	-3 = Batu kebuka
-	-4 = Emas Kebuka */
-
-void PrintBoard(void){
-	int i,j,a,b;
-	/*
-	#define border1 6
-	#define border2 5
-	#define blank 20
-	#define corner1 1
-	#define corner2 2
-	#define corner3 3
-	#define corner4 4
-	#define sect1 22
-	#define sect2 21
-	#define sect3 25
-	#define sect4 23
-	#define sect5 16
-	#define up 26
-	#define down 26
-	#define left 26
-	#define right 26
-	#define mid 26
-	/*/
-	#define border1 '-' /* Border datar */
-	#define border2 '|' /* Border tegak */
-	#define blank ' ' /* Kosong */
-	#define facedown '#' /* Kartu tertutup (Goal Card) */
-	#define corner1 ' ' /* Border kiri atas (|^) */
-	#define corner2 ' ' /* Border kanan atas (^|) */
-	#define corner3 ' ' /* Border kiri bawah (|_) */
-	#define corner4 ' ' /* Border kanan bawah (_|) */
-	#define sect1 ' ' /* Border atas tengah (^|^) */
-	#define sect2 ' ' /* Border bawah tengah (_|_) */
-	#define sect3 ' ' /* Border kiri tengah (|-) */
-	#define sect4 ' ' /* Border kanan tengah (-|) */
-	#define sect5 ' ' /* Border tengah (+) */
-	#define up 'H' /* Jalan atas kebuka */
-	#define down 'H' /* Jalan bawah kebuka */
-	#define left '=' /* Jalan kiri kebuka */
-	#define right '=' /* Jalan kanan kebuka */
-	#define mid 'O' /* Jalan tengah kebuka (buntu/tidak) */
-	printf("   ");
-	for (j=0;j<9;j++){
-		printf("  %c ",'1'+j);
-	}
-	printf("\n");
-	for (i=0;i<5;i++){
-		printf("   ");
-		for (j=0;j<9;j++){
-			if (i==0){
-				if (j==0)printf("%c",corner1);
-				else printf("%c",sect1);
-			} else {
-				if (j==0)printf("%c",sect3);
-				else printf("%c",sect5);
-			}
-			for (b=0;b<3;b++){
-				printf("%c",border1);
-			}
-		}
-		if (i==0)printf("%c\n",corner2);
-		else printf("%c\n",sect4);
-		for (a=0;a<3;a++){
-			if (a==1)printf(" %c ",'A'+i);
-			else printf("   ");
-			for (j=0;j<9;j++){
-				printf("%c",border2);
-				switch(a){
-					case 0: if (Card_Open[i][j]==-1){
-								printf("%c",facedown);
-							} else printf("%c",blank);
-							if (Card_Open[i][j]==-1){
-								printf("%c",facedown);
-							} else if ((Card_Open[i][j])&1){
-								printf("%c",up);
-							} else {
-								printf("%c",blank);
-							}
-							if (Card_Open[i][j]==-1){
-								printf("%c",facedown);
-							} else printf("%c",blank);
-							break;
-					case 1: if (Card_Open[i][j]==-1){
-								printf("%c",facedown);
-							} else if (((Card_Open[i][j])>>1)&1){
-								printf("%c",left);
-							} else {
-								printf("%c",blank);
-							}
-							if (Card_Open[i][j]==-1){
-								printf("%c",facedown);
-							} else if (((Card_Open[i][j])>>4)&1){
-								printf("%c",mid);
-							} else {
-								printf("%c",blank);
-							}
-							if (Card_Open[i][j]==-1){
-								printf("%c",facedown);
-							} else if (((Card_Open[i][j])>>3)&1){
-								printf("%c",right);
-							} else {
-								printf("%c",blank);
-							}
-							break;
-					case 2: if (Card_Open[i][j]==-1){
-								printf("%c",facedown);
-							} else printf("%c",blank);
-							if (Card_Open[i][j]==-1){
-								printf("%c",facedown);
-							} else if (((Card_Open[i][j])>>2)&1){
-								printf("%c",down);
-							} else {
-								printf("%c",blank);
-							}
-							if (Card_Open[i][j]==-1){
-								printf("%c",facedown);
-							} else printf("%c",blank);
-							break;
-				}
-			}
-			printf("%c\n",border2);
-		}
-	}
-	printf("   ");
-	for (j=0;j<9;j++){
-		if (j==0)printf("%c",corner3);
-		else printf("%c",sect2);
-		for (b=0;b<3;b++){
-			printf("%c",border1);
-		}
-	}
-	printf("%c\n",corner4);
-	#undef border1
-	#undef border2
-	#undef blank
-	#undef facedown
-	#undef corner1
-	#undef corner2
-	#undef corner3
-	#undef corner4
-	#undef sect1
-	#undef sect2
-	#undef sect3
-	#undef sect4
-	#undef sect5
-	#undef up
-	#undef down
-	#undef left
-	#undef right
-	#undef mid
-}
-
-void PutCard(int PosY, int PosX, int Stat){
-	int i,tmp,tmp2;
-	int a,b;
-	printf("%d %d %d\n",Stat&15,Card_Able[PosY][PosX],Card_Around[PosY][PosX]);
-	printf("%d %d\n",Stat&15^Card_Able[PosY][PosX],Card_Around[PosY][PosX]);
-	if (Card_Around[PosY][PosX]&Card_Able[PosY][PosX]){
-		a=(Stat&15)&Card_Around[PosY][PosX];
-		b=(Card_Able[PosY][PosX])&Card_Around[PosY][PosX];
-		if (!(a^b)){
-			Card_Open[PosY][PosX]=Stat;
-			tmp=((Stat>>2)&3)+(Stat<<2);
-			tmp2=(Stat>>4)&1;
-			for (i=0;i<4;i++){
-				if ((0<=(PosY+MoveY[i]))&&((PosY+MoveY[i])<=4)&&(0<=(PosX+MoveX[i]))&&((PosX+MoveX[i])<=8)){
-					Card_Able[PosY+MoveY[i]][PosX+MoveX[i]]|=(tmp&tmp2);
-					Card_Around[PosY+MoveY[i]][PosX+MoveX[i]]|=(tmp2);
-				}
-				tmp2<<=1;
-			}
-		} else {
-			printf("Wrong Shape\n");
-		}
-	} else {
-		printf("No Connected\n");
-	}
-}
-
-void Init(){
+void Board_Init(){
+	/* Inisialisasi Board */
+	/* Things todo :
+		Cetak board jika sudah memakai goto. Tambah 2 parameter (?) */
 	int i,j;
 	for (i=0;i<5;i++){
 		for (j=0;j<9;j++){
-			Card_Open[i][j]=0;
-			Card_Able[i][j]=0;
-			Card_Around[i][j]=0;
+			Board_Card_Open[i][j]=0;
+			Board_Card_Able[i][j]=0;
+			Board_Card_Around[i][j]=0;
+			Board_Card_Flag[i][j]=0;
 		}
 	}
-	/* Kartu Start */
-	Card_Around[2][8]=15;
-	Card_Able[2][8]=15;
-	PutCard(2,8,31);
 	/* Kartu Goal */
-	Card_Open[0][0]=-1;
-	Card_Open[2][0]=-1;
-	Card_Open[4][0]=-1;
+	Board_Card_Open[0][0]=-3;
+	Board_Card_Open[2][0]=-3;
+	Board_Card_Open[4][0]=-3;
+	/* Randomize Gold Card */
+	srand(time(NULL));
+	Board_Card_Open[0+2*(rand()%3)][0]=-4;
+	/* Win Flag */
+	Board_Win=0;
+	/* Kartu Start */
+	Board_Card_Flag[2][8]=1;
+	Board_Card_Able[2][8]=15;
+	Board_PutCard(2,8,31);
 }
 
-void PrintCard(int Stat){
-
-	#define border1 '-' /* Border datar */
+void Board_Print(void){
+	/* Cetak Board. Ukuran 9x7. Mencetak bantuan posisi juga. */
+	/* Things todo:
+		Tambah 2 Parameter untuk posisi kiri atas Board.
+		Memakai goto. */
+	int i,j,a,b;
+	char tmp1,tmp2,tmp3,tmp4,tmp5;
+	#define border1 '_' /* Border datar */
 	#define border2 '|' /* Border tegak */
 	#define blank ' ' /* Kosong */
 	#define facedown '#' /* Kartu tertutup (Goal Card) */
-	#define corner1 ' ' /* Border kiri atas (|^) */
-	#define corner2 ' ' /* Border kanan atas (^|) */
-	#define corner3 ' ' /* Border kiri bawah (|_) */
-	#define corner4 ' ' /* Border kanan bawah (_|) */
-	#define sect1 ' ' /* Border atas tengah (^|^) */
-	#define sect2 ' ' /* Border bawah tengah (_|_) */
-	#define sect3 ' ' /* Border kiri tengah (|-) */
-	#define sect4 ' ' /* Border kanan tengah (-|) */
-	#define sect5 ' ' /* Border tengah (+) */
-	#define up 'H' /* Jalan atas kebuka */
-	#define down 'H' /* Jalan bawah kebuka */
-	#define left '=' /* Jalan kiri kebuka */
-	#define right '=' /* Jalan kanan kebuka */
-	#define mid 'O' /* Jalan tengah kebuka (buntu/tidak) */
-	int a;
-	for (a=0;a<3;a++){
-		printf("%c",border2);
-		switch(a){
-			case 0: if (Stat==-1){
-						printf("%c",facedown);
-					} else printf("%c",blank);
-					if (Stat==-1){
-						printf("%c",facedown);
-					} else if ((Stat)&1){
-						printf("%c",up);
-					} else {
-						printf("%c",blank);
-					}
-					if (Stat==-1){
-						printf("%c",facedown);
-					} else printf("%c",blank);
-					break;
-			case 1: if (Stat==-1){
-						printf("%c",facedown);
-					} else if (((Stat)>>1)&1){
-						printf("%c",left);
-					} else {
-						printf("%c",blank);
-					}
-					if (Stat==-1){
-						printf("%c",facedown);
-					} else if (((Stat)>>4)&1){
-						printf("%c",mid);
-					} else {
-						printf("%c",blank);
-					}
-					if (Stat==-1){
-						printf("%c",facedown);
-					} else if (((Stat)>>3)&1){
-						printf("%c",right);
-					} else {
-						printf("%c",blank);
-					}
-					break;
-			case 2: if (Stat==-1){
-						printf("%c",facedown);
-					} else printf("%c",blank);
-					if (Stat==-1){
-						printf("%c",facedown);
-					} else if (((Stat)>>2)&1){
-						printf("%c",down);
-					} else {
-						printf("%c",blank);
-					}
-					if (Stat==-1){
-						printf("%c",facedown);
-					} else printf("%c",blank);
-					break;
+	//Print baris berisi nomor kolom
+	printf("  ");
+	for (j=0;j<9;j++){
+		printf("    %c    ",'1'+j);
+	}
+	printf("\n");
+	for (i=0;i<5;i++){
+		//Print border atas kartu
+		printf("  ");
+		for (j=0;j<9;j++){
+			printf(" ");
+			for (b=0;b<7;b++){
+				printf("%c",border1);
+			}
+			printf(" ");
 		}
-		printf("%c\n",border2);
+		printf("\n");
+		for (a=0;a<5;a++){
+			//Print kolom beris huruf baris
+			if (a==2)printf("%c ",'A'+i);
+			else printf("  ");
+			for (j=0;j<9;j++){
+				//Print kartu.
+				tmp1=blank;tmp2=blank;tmp3=blank;tmp4=blank;tmp5=blank;
+				switch(a){
+					case 0: if (Board_Card_Open[i][j]<0){
+								// Card == Goalcard
+								if (Board_Card_Open[i][j]<-2){
+									// Tertutup
+									tmp3=facedown;
+									tmp2=facedown;
+									tmp1=facedown;
+								} else {
+									// Kebuka
+									tmp2=border2;
+									/*if (Board_Card_Open[i][j]==-1){
+										//Batu
+										//???
+									} else {
+										//Emas
+										//???
+									}*/
+								}
+							} else {
+								if (Board_Card_Open[i][j]&1){
+									tmp2=border2;
+									if (!((Board_Card_Open[i][j]>>4)&1)){
+										tmp1=border1;
+									}
+								}
+							}
+							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+							break;
+					case 1: if (Board_Card_Open[i][j]<0){
+								// Card == Goalcard
+								if (Board_Card_Open[i][j]<-2){
+									// Tertutup
+									tmp1=facedown;
+									tmp2=facedown;
+									tmp3=facedown;
+									tmp4=facedown;
+								} else {
+									// Kebuka
+									tmp2=border2;
+									tmp3=border1;
+									tmp4=border1;
+									/*if (Board_Card_Open[i][j]==-1){
+										//Batu
+										//???
+									} else {
+										//Emas
+										//???
+									}*/
+								}
+							} else {
+								if ((Board_Card_Open[i][j]>>1)&1){
+									tmp3=border1;
+								}
+								if ((Board_Card_Open[i][j]>>3)&1){
+									tmp4=border1;
+								}
+								if ((Board_Card_Open[i][j]>>4)&1){
+									if (Board_Card_Open[i][j]&1){
+										tmp2=border2;
+									} else {
+										tmp1=border1;
+									}
+								}
+							}
+							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp4,tmp4,border2);
+							break;
+					case 2: if (Board_Card_Open[i][j]<0){
+								// Card == Goalcard
+								if (Board_Card_Open[i][j]<-2){
+									// Tertutup
+									tmp1=facedown;
+									tmp2=facedown;
+									tmp3=facedown;
+									tmp4=facedown;
+									tmp5=facedown;
+								} else {
+									// Kebuka
+									tmp3=border1;
+									tmp4=border1;
+									if (Board_Card_Open[i][j]==-1){
+										//Batu
+										tmp1='R';
+									} else {
+										//Emas
+										tmp1='G';
+									}
+								}
+							} else {
+								if ((Board_Card_Open[i][j]>>1)&1){
+									tmp3=border1;
+								}
+								if ((Board_Card_Open[i][j]>>3)&1){
+									tmp4=border1;
+								}
+								if ((Board_Card_Open[i][j]>>4)&1){
+									if (!((Board_Card_Open[i][j]>>1)&1)){
+										tmp2=border2;
+									}
+									if (!((Board_Card_Open[i][j]>>3)&1)){
+										tmp5=border2;
+									}
+									if (!((Board_Card_Open[i][j]>>2)&1)){
+										tmp1=border1;
+									}
+								} else {
+									if ((Board_Card_Open[i][j]>>1)&1){
+										tmp2=border2;
+									}
+									if ((Board_Card_Open[i][j]>>3)&1){
+										tmp5=border2;
+									}
+								}
+							}
+							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp5,tmp4,tmp4,border2);
+							break;
+					case 3: if (Board_Card_Open[i][j]<0){
+								// Card == Goalcard
+								if (Board_Card_Open[i][j]<-2){
+									// Tertutup
+									tmp3=facedown;
+									tmp2=facedown;
+									tmp1=facedown;
+								} else {
+									// Kebuka
+									tmp2=border2;
+									/*if (Board_Card_Open[i][j]==-1){
+										//Batu
+										//???
+									} else {
+										//Emas
+										//???
+									}*/
+								}
+							} else {
+								if ((Board_Card_Open[i][j]>>2)&1){
+									tmp2=border2;
+									if (!((Board_Card_Open[i][j]>>4)&1)){
+										tmp2=blank;
+										tmp1=border1;
+									}
+								}
+							}
+							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+							break;
+					case 4: if (Board_Card_Open[i][j]<0){
+								// Card == Goalcard
+								if (Board_Card_Open[i][j]<-2){
+									// Tertutup
+									tmp3=facedown;
+									tmp2=facedown;
+									tmp1=facedown;
+								} else {
+									// Kebuka
+									tmp1=border1;
+									tmp2=border2;
+									tmp3=border1;
+									/*if (Board_Card_Open[i][j]==-1){
+										//Batu
+										//???
+									} else {
+										//Emas
+										//???
+									}*/
+								}
+							} else {
+								tmp1=border1;
+								tmp2=border1;
+								tmp3=border1;
+								if ((Board_Card_Open[i][j]>>2)&1){
+									tmp2=border2;
+								}
+							}
+							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+							break;
+				}
+			}
+			printf("\n");
+		}
 	}
 	#undef border1
 	#undef border2
 	#undef blank
 	#undef facedown
-	#undef corner1
-	#undef corner2
-	#undef corner3
-	#undef corner4
-	#undef sect1
-	#undef sect2
-	#undef sect3
-	#undef sect4
-	#undef sect5
-	#undef up
-	#undef down
-	#undef left
-	#undef right
-	#undef mid
 }
 
-int main(){
-	int a,b,c;
-	Init();
-	PrintBoard();
-	while(1){
-		scanf("%d %d %d",&a,&b,&c);
-		PrintCard(c);
-		PutCard(a,b,c);
-		PrintBoard();
+void Board_PrintCard(int Stat){
+	/* Cetak satu kartu, sesuai kode Stat. Lihat penjelasan diatas untuk kode Stat. */
+	/* Things todo:
+		Menambah 2 Parameter, posisi kartu dalam Board (5x9)
+		Memakai goto, jadi langsung 'mencetak' kartu di board. */
+	int a,b;
+	char tmp1,tmp2,tmp3,tmp4,tmp5;
+	#define border1 '_' /* Border datar */
+	#define border2 '|' /* Border tegak */
+	#define blank ' ' /* Kosong */
+	#define facedown '#' /* Kartu tertutup (Goal Card) */
+	for (a=0;a<5;a++){
+		//Print kartu
+		tmp1=blank;tmp2=blank;tmp3=blank;tmp4=blank;tmp5=blank;
+		switch(a){
+			case 0: if (Stat<0){
+						// Card == Goalcard
+						if (Stat<-2){
+							// Tertutup
+							tmp3=facedown;
+							tmp2=facedown;
+							tmp1=facedown;
+						} else {
+							// Kebuka
+							tmp2=border2;
+							/*if (Stat==-1){
+								//Batu
+								//???
+							} else {
+								//Emas
+								//???
+							}*/
+						}
+					} else {
+						if (Stat&1){
+							tmp2=border2;
+							if (!((Stat>>4)&1)){
+								tmp1=border1;
+							}
+						}
+					}
+					printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+					break;
+			case 1: if (Stat<0){
+						// Card == Goalcard
+						if (Stat<-2){
+							// Tertutup
+							tmp1=facedown;
+							tmp2=facedown;
+							tmp3=facedown;
+							tmp4=facedown;
+						} else {
+							// Kebuka
+							tmp2=border2;
+							tmp3=border1;
+							tmp4=border1;
+							/*if (Stat==-1){
+								//Batu
+								//???
+							} else {
+								//Emas
+								//???
+							}*/
+						}
+					} else {
+						if ((Stat>>1)&1){
+							tmp3=border1;
+						}
+						if ((Stat>>3)&1){
+							tmp4=border1;
+						}
+						if ((Stat>>4)&1){
+							if (Stat&1){
+								tmp2=border2;
+							} else {
+								tmp1=border1;
+							}
+						}
+					}
+					printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp4,tmp4,border2);
+					break;
+			case 2: if (Stat<0){
+						// Card == Goalcard
+						if (Stat<-2){
+							// Tertutup
+							tmp1=facedown;
+							tmp2=facedown;
+							tmp3=facedown;
+							tmp4=facedown;
+							tmp5=facedown;
+						} else {
+							// Kebuka
+							tmp3=border1;
+							tmp4=border1;
+							if (Stat==-1){
+								//Batu
+								tmp1='R';
+							} else {
+								//Emas
+								tmp1='G';
+							}
+						}
+					} else {
+						if ((Stat>>1)&1){
+							tmp3=border1;
+						}
+						if ((Stat>>3)&1){
+							tmp4=border1;
+						}
+						if ((Stat>>4)&1){
+							if (!((Stat>>1)&1)){
+								tmp2=border2;
+							}
+							if (!((Stat>>3)&1)){
+								tmp5=border2;
+							}
+							if (!((Stat>>2)&1)){
+								tmp1=border1;
+							}
+						} else {
+							if ((Stat>>1)&1){
+								tmp2=border2;
+							}
+							if ((Stat>>3)&1){
+								tmp5=border2;
+							}
+						}
+					}
+					printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp5,tmp4,tmp4,border2);
+					break;
+			case 3: if (Stat<0){
+						// Card == Goalcard
+						if (Stat<-2){
+							// Tertutup
+							tmp3=facedown;
+							tmp2=facedown;
+							tmp1=facedown;
+						} else {
+							// Kebuka
+							tmp2=border2;
+							/*if (Stat==-1){
+								//Batu
+								//???
+							} else {
+								//Emas
+								//???
+							}*/
+						}
+					} else {
+						if ((Stat>>2)&1){
+							tmp2=border2;
+							if (!((Stat>>4)&1)){
+								tmp2=blank;
+								tmp1=border1;
+							}
+						}
+					}
+					printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+					break;
+			case 4: if (Stat<0){
+						// Card == Goalcard
+						if (Stat<-2){
+							// Tertutup
+							tmp3=facedown;
+							tmp2=facedown;
+							tmp1=facedown;
+						} else {
+							// Kebuka
+							tmp1=border1;
+							tmp2=border2;
+							tmp3=border1;
+							/*if (Stat==-1){
+								//Batu
+								//???
+							} else {
+								//Emas
+								//???
+							}*/
+						}
+					} else {
+						tmp1=border1;
+						tmp2=border1;
+						tmp3=border1;
+						if ((Stat>>2)&1){
+							tmp2=border2;
+						}
+					}
+					printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+					break;
+		}
+		printf("\n");
 	}
-	return 0;
+	#undef border1
+	#undef border2
+	#undef blank
+	#undef facedown
+}
+
+int Board_Refresh(int PosY, int PosX){
+	/* Fungsi rekursif untuk mengecek kartu mana saja yang 
+	   terhubung langsung (satu komponen) dengan kartu start */
+	/* Memakai algoritma flood fill. Flag-nya Card_Able */
+	/* Untuk mengantisipasi Rockfall, sebelum dipanggil, 
+	   Card_Able, Card_Around, dan Card_Flag dikosongkan dulu. */
+	int i,tmp,tmp2,ans;
+	tmp=((Board_Card_Open[PosY][PosX]>>2)&3)+(Board_Card_Open[PosY][PosX]<<2);
+	tmp2=1;
+	ans=0;
+	for (i=0;i<4;i++){
+		//Cek Kartu sekitar
+		if ((0<=(PosY+Board_MoveY[i]))&&((PosY+Board_MoveY[i])<=4)&&(0<=(PosX+Board_MoveX[i]))&&((PosX+Board_MoveX[i])<=8)){
+			//Kartu berada dalam board
+			if ((tmp&tmp2)&&(!(Board_Card_Able[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]))&&((Board_Card_Open[PosY][PosX]>>4)&1)){
+				//Syarat menghubungkan kartu lain: terhubung, dan penghubung bukan jalan buntu.
+				//Board_Card_Able dipakai untuk flag agar tidak ke kartu sama 2x
+				Board_Card_Able[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp&tmp2);
+				Board_Card_Around[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp2);
+				if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]<-2){
+					//Di sebelah Goalcard
+					Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]+=2;
+					if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]==-2){
+						//Kebuka kartu emas
+						Board_Win=1;
+					}
+				} else if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]>0){
+					//Rekursif
+					ans+=Board_Refresh(PosY+Board_MoveY[i],PosX+Board_MoveX[i]);
+				} else if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]==0){
+					//Kartu kosong. Boleh ditaruh kartu.
+					Board_Card_Flag[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]=1;
+					ans+=1;
+				}
+			} else {
+				Board_Card_Able[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp&tmp2);
+				Board_Card_Around[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp2);
+			}
+		}
+		tmp2<<=1;
+	}
+	return ans;
+}
+
+void Board_PutCard(int PosY, int PosX, int Stat){
+	/* Menaruh kartu di Board. Stat berisi kode kartu yang akan ditaruh */
+	/* Things todo:
+		Langsung memanggil Printcard */
+	int i,j,tmp,tmp2;
+	int a,b;
+	if (Board_Card_Open[PosY][PosX]){
+		printf("Position occupied\n");
+	} else {
+		if (Board_Card_Flag[PosY][PosX]){
+			//Cek kartu terhubung langsung dengan start/tidak
+			a=(Stat&15)&Board_Card_Around[PosY][PosX];
+			b=(Board_Card_Able[PosY][PosX])&Board_Card_Around[PosY][PosX];
+			if (!(a^b)){
+				//Cek bentuk kartu, sesuai dengan kartu sekitar/tidak
+				Board_Card_Open[PosY][PosX]=Stat;
+				//Reset semua status kartu diboard, terhubung dengan start/tidak
+				for (i=0;i<5;i++){
+					for (j=0;j<9;j++){
+						Board_Card_Able[i][j]=0;
+						Board_Card_Around[i][j]=0;
+						Board_Card_Flag[i][j]=0;
+					}
+				}
+				Board_Card_Able[2][8]=15;
+				tmp=Board_Refresh(2,8);
+				tmp2=0;
+				//Cek status goalcard.
+				if (Board_Card_Open[0][0]>-3){
+					//Terbuka
+					tmp2++;
+				} else if ((!(Board_Card_Flag[0][0]))&&(Board_Card_Around[0][0]==12)){
+					//Tidak bisa dibuka
+					//if rockfall habis
+					tmp2++;
+				}
+				if (Board_Card_Open[2][0]>-3){
+					//Terbuka
+					tmp2++;
+				} else if ((!(Board_Card_Flag[2][0]))&&(Board_Card_Around[2][0]==13)){
+					//Tidak bisa dibuka
+					//if rockfall habis
+					tmp2++;
+				}
+				if (Board_Card_Open[4][0]>-3){
+					//Terbuka
+					tmp2++;
+				} else if ((!(Board_Card_Flag[4][0]))&&(Board_Card_Around[4][0]==9)){
+					//Tidak bisa dibuka
+					//if rockfall habis
+					tmp2++;
+				}
+				if (Board_Win){
+					//Gold card terbuka
+					//???
+					printf("Gold Miner!\n");
+				} else if ((tmp==0)||(tmp2==3)){
+					//Stalemate. Tidak ada kartu yg bisa ditaruh/ Goldcard tidak bisa dicapai
+					printf("Sabotaged!\n");
+					Board_Win=-1;
+				}
+			} else {
+				printf("Wrong Shape\n");
+			}
+		} else {
+			printf("Not Connected\n");
+		}
+	}
+}
+
+int Board_Viewmap(int pos){
+	/* Mengirimkan kode isi kartu Goalcard. Memakai rumus */
+	/* Penjelasan pos : 
+		0 = Goalcard paling atas
+		1 = Goalcard tengah
+		2 = Goalcard paling bawah */
+	/* Penjelasan output :
+		0 = Yang dilihat kartu Batu
+		1 = Yang dilihat kartu Gold */
+	//Rumus
+	return !(Board_Card_Open[(pos-1)*2][0]%2);
 }
