@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * */
-/* ADT Board v0.6 			 					 */
+/* ADT Board v1.0 			 					 */
 /* By Muntaha Ilmi 13512048  					 */
 /* Header 					 					 */
 /* Mengatur Board. Melingkupi pencetakan Board,  */
@@ -16,6 +16,7 @@ int Board_Card_Flag[10][15]; /* Posisi yang bisa ditaruh, 0 = Tidak bisa ditaruh
 int Board_Win; /* Menandakan status game. 0 = Belum ada yang menang, 1 = Goldminer menang, -1 = Saboteur menang*/
 static int Board_MoveY[]={1,0,-1,0}; /* Array pergerakan. Mempermudah loop ke kartu sekeliling */
 static int Board_MoveX[]={0,1,0,-1}; /* Array pergerakan. Mempermudah loop ke kartu sekeliling */
+int Board_PosX,Board_PosY;
 
 /* Penjelasan kode isi kartu :
 		memakai bitmask.
@@ -34,30 +35,17 @@ static int Board_MoveX[]={0,1,0,-1}; /* Array pergerakan. Mempermudah loop ke ka
 	-2 = Emas Kebuka
 	-3 = Batu (tutup)
 	-4 = Emas (tutup) */
-	
-/* Things to do : 
-	port ke linux.
-		buat print board hanya pada init, 2 parameter, Posisi kiri atas board.
-		ganti semua printf("\n") jadi goto.
-	Buat setiap kali putcard, hanya printcard, tambah 2 parameter, posisi kartu print
-*/
 
-void Board_Init();
+void Board_Init(int PosX,int PosY);
 	/* Inisialisasi Board */
-	/* Things todo :
-		Cetak board jika sudah memakai goto. Tambah 2 parameter (?) */
+	/* PosX dan PosY untuk posisi kiri atas Board */
 
 void Board_Print(void);
-	/* Cetak Board. Ukuran 9x7. Mencetak bantuan posisi juga. */
-	/* Things todo:
-		Tambah 2 Parameter untuk posisi kiri atas Board.
-		Memakai goto. */
+	/* Cetak Board. Ukuran 5x9 kartu. Mencetak bantuan posisi juga. */
 
-void Board_PrintCard(int Stat);
+void Board_PrintCard(int Stat, int PosY, int PosX);
 	/* Cetak satu kartu, sesuai kode Stat. Lihat penjelasan diatas untuk kode Stat. */
-	/* Things todo:
-		Menambah 2 Parameter, posisi kartu dalam Board (5x9)
-		Memakai goto, jadi langsung 'mencetak' kartu di board. */
+	/* PosX dan PosY untuk posisi kartu di Board (5x9) */
 
 int Board_Refresh(int PosY, int PosX);
 	/* Fungsi rekursif untuk mengecek kartu mana saja yang 
@@ -68,8 +56,6 @@ int Board_Refresh(int PosY, int PosX);
 
 void Board_PutCard(int PosY, int PosX, int Stat);
 	/* Menaruh kartu di Board. Stat berisi kode kartu yang akan ditaruh */
-	/* Things todo:
-		Langsung memanggil Printcard */
 
 int Board_Viewmap(int pos);
 	/* Mengirimkan kode isi kartu Goalcard. Memakai rumus */

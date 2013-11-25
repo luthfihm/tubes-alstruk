@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * */
-/* ADT Board v0.6			 					 */
+/* ADT Board v1.0			 					 */
 /* By Muntaha Ilmi 13512048  					 */
 /* Body 					 					 */
 /* Mengatur Board. Melingkupi pencetakan Board,  */
@@ -10,19 +10,14 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Board.h"
+#include "../tools/tools.h"
 
-/* Things to do : 
-	port ke linux.
-		buat print board hanya pada init, 2 parameter, Posisi kiri atas board.
-		ganti semua printf("\n") jadi goto.
-	Buat setiap kali putcard, hanya printcard, tambah 2 parameter, posisi kartu print
-*/
-
-void Board_Init(){
+void Board_Init(int PosX,int PosY){
 	/* Inisialisasi Board */
-	/* Things todo :
-		Cetak board jika sudah memakai goto. Tambah 2 parameter (?) */
+	/* PosX dan PosY untuk posisi kiri atas Board */
 	int i,j;
+	Board_PosX=PosX;
+	Board_PosY=PosY;
 	for (i=0;i<5;i++){
 		for (j=0;j<9;j++){
 			Board_Card_Open[i][j]=0;
@@ -47,22 +42,24 @@ void Board_Init(){
 }
 
 void Board_Print(void){
-	/* Cetak Board. Ukuran 9x7. Mencetak bantuan posisi juga. */
-	/* Things todo:
-		Tambah 2 Parameter untuk posisi kiri atas Board.
-		Memakai goto. */
+	/* Cetak Board. Ukuran 5x9 kartu. Mencetak bantuan posisi juga. */
 	int i,j,a,b;
+	int PosX=Board_PosX;
+	int PosY=Board_PosY;
 	char tmp1,tmp2,tmp3,tmp4,tmp5;
 	#define border1 '_' /* Border datar */
 	#define border2 '|' /* Border tegak */
 	#define blank ' ' /* Kosong */
 	#define facedown '#' /* Kartu tertutup (Goal Card) */
 	//Print baris berisi nomor kolom
+	gotoxy(PosX,PosY);
 	printf("  ");
 	for (j=0;j<9;j++){
 		printf("    %c    ",'1'+j);
 	}
-	printf("\n");
+	PosY++;
+	gotoxy(PosX,PosY);
+	//printf("\n");
 	for (i=0;i<5;i++){
 		//Print border atas kartu
 		printf("  ");
@@ -73,7 +70,8 @@ void Board_Print(void){
 			}
 			printf(" ");
 		}
-		printf("\n");
+		PosY++;
+		gotoxy(PosX,PosY);
 		for (a=0;a<5;a++){
 			//Print kolom beris huruf baris
 			if (a==2)printf("%c ",'A'+i);
@@ -258,7 +256,8 @@ void Board_Print(void){
 							break;
 				}
 			}
-			printf("\n");
+			PosY++;
+			gotoxy(PosX,PosY);
 		}
 	}
 	#undef border1
@@ -267,13 +266,14 @@ void Board_Print(void){
 	#undef facedown
 }
 
-void Board_PrintCard(int Stat){
+void Board_PrintCard(int Stat, int PosY, int PosX){
 	/* Cetak satu kartu, sesuai kode Stat. Lihat penjelasan diatas untuk kode Stat. */
-	/* Things todo:
-		Menambah 2 Parameter, posisi kartu dalam Board (5x9)
-		Memakai goto, jadi langsung 'mencetak' kartu di board. */
+	/* PosX dan PosY untuk posisi kartu di Board (5x9) */
 	int a,b;
 	char tmp1,tmp2,tmp3,tmp4,tmp5;
+	PosX=PosX*9+2+Board_PosX;
+	PosY=PosY*6+2+Board_PosY;
+	gotoxy(PosX,PosY);
 	#define border1 '_' /* Border datar */
 	#define border2 '|' /* Border tegak */
 	#define blank ' ' /* Kosong */
@@ -457,7 +457,8 @@ void Board_PrintCard(int Stat){
 					printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
 					break;
 		}
-		printf("\n");
+		PosY++;
+		gotoxy(PosX,PosY);
 	}
 	#undef border1
 	#undef border2
@@ -511,8 +512,6 @@ int Board_Refresh(int PosY, int PosX){
 
 void Board_PutCard(int PosY, int PosX, int Stat){
 	/* Menaruh kartu di Board. Stat berisi kode kartu yang akan ditaruh */
-	/* Things todo:
-		Langsung memanggil Printcard */
 	int i,j,tmp,tmp2;
 	int a,b;
 	if (Board_Card_Open[PosY][PosX]){
