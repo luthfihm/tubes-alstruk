@@ -62,7 +62,7 @@ void Board_Print(void){
 	//printf("\n");
 	for (i=0;i<5;i++){
 		//Print border atas kartu
-		printf("  ");
+		/*printf("  ");
 		for (j=0;j<9;j++){
 			printf(" ");
 			for (b=0;b<7;b++){
@@ -71,7 +71,7 @@ void Board_Print(void){
 			printf(" ");
 		}
 		PosY++;
-		gotoxy(PosX,PosY);
+		gotoxy(PosX,PosY);*/
 		for (a=0;a<5;a++){
 			//Print kolom beris huruf baris
 			if (a==2)printf("%c ",'A'+i);
@@ -106,7 +106,7 @@ void Board_Print(void){
 									}
 								}
 							}
-							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
 							break;
 					case 1: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -144,7 +144,7 @@ void Board_Print(void){
 									}
 								}
 							}
-							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp4,tmp4,border2);
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp4,tmp4,border2);
 							break;
 					case 2: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -193,7 +193,7 @@ void Board_Print(void){
 									}
 								}
 							}
-							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp5,tmp4,tmp4,border2);
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp5,tmp4,tmp4,border2);
 							break;
 					case 3: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -222,7 +222,7 @@ void Board_Print(void){
 									}
 								}
 							}
-							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
 							break;
 					case 4: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -252,7 +252,7 @@ void Board_Print(void){
 									tmp2=border2;
 								}
 							}
-							printf("%c%c%c%c%c%c%c%c%c",border2,tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
 							break;
 				}
 			}

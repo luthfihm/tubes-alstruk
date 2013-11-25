@@ -1,8 +1,8 @@
 #ifndef MESINBARIS_H
 #define MESINBARIS_H
 
-#include "mystring.h"
-#include "mesinkarakter.h"
+#include "../mystring/mystring.h"
+#include "../mesinkarakter/mesinkarakter.h"
 #include <stdio.h>
 
 /* ******* KONSTANTA ********* */

@@ -1,6 +1,6 @@
 #include "data.h"
-#include "mesinbaris.h"
-
+#include "../mesinbaris/mesinbaris.h"
+#include "../tools/tools.h"
 
 //Konstruktor
 void CreateEmptyData(tabData *T)
@@ -68,6 +68,35 @@ boolean addPengguna(tabData *T, String nama, int score, time_t time)
 		return true;
 	}
 		
+}
+
+void PrintPengguna(tabData T)
+{
+	int i,x,y;
+	String waktu;
+	i = 1;
+	x = 20;
+	y = 10;
+	gotoxy(x,y);
+	printf("Rank");
+	gotoxy(x+8,y);
+	printf("Name");
+	gotoxy(x+35,y);
+	printf("Score");
+	gotoxy(x+45,y);
+	printf("Time");
+	while (i <= T.jumlahPemain){
+		gotoxy(x,y+i);
+		printf("%d.",i);
+		gotoxy(x+8,y+i);
+		printf("%s", T.TI[i].nama);
+		gotoxy(x+37,y+i);
+		printf("%3d",T.TI[i].score);
+		intToWaktu(T.TI[i].time,waktu);
+		gotoxy(x+45,y+i);
+		printf("%s",waktu);
+		i++;
+	}
 }
 
 //Procedure Sort

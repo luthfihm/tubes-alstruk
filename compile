@@ -1,0 +1,2 @@
+gcc -o saboteur main.c mystring/mystring.c tools/tools.c adt_data/data.c
+./saboteur

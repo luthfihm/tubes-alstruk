@@ -1,6 +1,6 @@
 /* ******** Mesin Karakter ******* */
 
-#include "boolean.h"
+#include "../boolean.h"
 #include <stdio.h>
 #ifndef mesinkarakter
 #define mesinkarakter

@@ -1,6 +1,6 @@
 //Header Data.h
-#include "boolean.h"
-#include "mystring.h"
+#include "../boolean.h"
+#include "../mystring/mystring.h"
 #include <time.h>
 #ifndef DATA_H
 #define DATA_H
@@ -61,6 +61,8 @@ boolean addPengguna(tabData *T, String nama, int score, time_t time);
 boolean delPengguna(tabData *T, String nama);
 /* Menghapus pengguna dengan nama pengguna dari tabel.
  */
+
+void PrintPengguna(tabData T);
 
 //Procedure Sort
 void sortScoreDesc(tabData *T);
