@@ -83,6 +83,20 @@ void Board_Print(void){
 	printf("\n");
 	#endif
 	for (i=0;i<5;i++){
+<<<<<<< HEAD
+=======
+		//Print border atas kartu
+		/*printf("  ");
+		for (j=0;j<9;j++){
+			printf(" ");
+			for (b=0;b<7;b++){
+				printf("%c",border1);
+			}
+			printf(" ");
+		}
+		PosY++;
+		gotoxy(PosX,PosY);*/
+>>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 		for (a=0;a<5;a++){
 			//Print kolom berisi huruf baris
 			if (a==2)printf("%c ",'A'+i);
@@ -120,6 +134,10 @@ void Board_Print(void){
 									}
 								}
 							}
+<<<<<<< HEAD
+=======
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+>>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 					case 1: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -164,6 +182,10 @@ void Board_Print(void){
 									}
 								}
 							}
+<<<<<<< HEAD
+=======
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp4,tmp4,border2);
+>>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 					case 2: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -216,9 +238,13 @@ void Board_Print(void){
 									}
 								}
 							}
+<<<<<<< HEAD
 							if ((((Board_Card_Able[i][j]&Board_Card_Around[i][j])>>3)&1)&&(Board_Card_Open[i][j])){
 								tmp6=blank;
 							}
+=======
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp5,tmp4,tmp4,border2);
+>>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 					case 3: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -249,6 +275,10 @@ void Board_Print(void){
 									}
 								}
 							}
+<<<<<<< HEAD
+=======
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+>>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 					case 4: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -295,6 +325,10 @@ void Board_Print(void){
 									}
 								}
 							}
+<<<<<<< HEAD
+=======
+							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
+>>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 				}
 				printf("%c%c%c%c%c%c%c%c",tmp1,tmp1,tmp2,tmp3,tmp4,tmp5,tmp5,tmp6);
