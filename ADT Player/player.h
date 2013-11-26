@@ -43,7 +43,7 @@ typedef struct {
 
 /* 	----- Selektor ----- */
 #define NbPlayer(T) (T).Nb
-/* String NamePlayer(ArrayofPlayer T, index i); */
+Dataplayer NamePlayer(ArrayofPlayer T, index i);
 /*	Mengambil nama player ke-index dari tabel */
 char CharacterofPlayer(ArrayofPlayer T, index i);
 /*	Mengambil karakter player ke-index dari tabel */
@@ -51,7 +51,7 @@ char ConditionofPlayer(ArrayofPlayer T, index i);
 /*	Mengambil kondisi player ke-index dari tabel */
 int ScorePlayer(ArrayofPlayer T, index i);
 /*	Mengambil score player ke-index dari tabel */
-Kartu KartuonIndex(ArrayofPlayer T, index user, index Kartus);
+Kartu KartuonIndex(ArrayofPlayer T, index user, index Kartu);
 /*	Mengambil Kartu player ke-index dari tabel */
 
 /* 	Definisi dari array player yang kosong adalah apabila condition berisi 
