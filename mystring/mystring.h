@@ -37,4 +37,9 @@ boolean StrLess (String S1,String S2);
 boolean StrLarger (String S1,String S2);
 /* Menghasilkan true jika S1 < S2. Kurang dari di sini dianalogikan seperti di Kamus */
 
+void strConcate(String input1, String input2, String output);
+/* I.S.	: input1 dan input2 berisi string yang valid
+ * F.s.	: output merupakan gabungan dari input1 dan input 2
+ */
+
 #endif
