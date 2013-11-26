@@ -108,3 +108,62 @@ boolean StrLarger (String S1,String S2)
 	}
 	return IsLarger;
 }
+
+void strConcate(String input1, String input2, String output)
+/* I.S.	: input1 dan input2 berisi string yang valid
+ * F.s.	: output merupakan gabungan dari input1 dan input 2
+ */
+{
+	//Kamus
+	int i, j;
+	
+	//Program
+	i = 0;
+	while ((input1[i] != '\0') && (i < MaxLength))
+	{
+		output[i] = input1[i];
+		i++;
+	}
+	
+	j = 0;
+	
+	while ((input2[j] != '\0') && (i < MaxLength))
+	{
+		output[i] = input2[j];
+		i++;
+		j++;
+	}
+	
+	output[i] = '\0';
+}
+
+
+void itoa(int i, String out)
+/* I.S.	:i adalah sebuah integer >= 0
+ * F.S.	:out berisi i dalam bentuk string
+ */
+{
+    char const digit[] = "0123456789";
+    int pos, shift, convert;
+    
+    pos = 0;
+    shift = i;
+    convert = i;
+    
+    do
+    {
+		pos++;
+		shift = shift / 10;
+	} while (shift);
+	
+	
+	out[pos] = '\0';
+	
+	do
+	{
+		pos--;
+		out[pos] = digit[convert % 10];
+		convert = convert /10;
+	} while (convert);
+	
+}

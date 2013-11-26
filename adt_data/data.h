@@ -32,14 +32,14 @@ void CreateEmptyData(tabData *T);
 //Menghasilkan T yang kosong
 
 // ******** Load dan Save Data ***********
-int loadData(tabData *T, String lokasi);
-/* Meload data ke tabel. Menghasilkan 0 jika berhasil.
+int loadData(tabData *T);
+/* Meload data ke tabel. Menghasilkan 0 jika berhasil. Lokasi file didefinisikan di MesinKarakter
  * Pesan error:	* 422: Invalid Format
  * 				* 404: File Not Found atau Access denied
  */
  
-int saveData(tabData T, String lokasi);
-/* Mensave tabel ke file. Return 0 jika berhasil, 1 jika gagal
+int saveData(tabData T);
+/* Mensave tabel ke file. Return 0 jika berhasil, 403 jika gagal Lokasi file didefinisikan di MesinKarakter
  */
 
 //****** Pengecekan terhadap kondisi tabel **********/
