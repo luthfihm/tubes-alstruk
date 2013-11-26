@@ -5,11 +5,14 @@
 #include "mystring/mystring.h"
 #include "tools/tools.h"
 #include "adt_data/data.h"
+#include "ADT Player/player.h"
+#include "game/game.h"
 
 int main(){
 	/* Kamus */
 	String opt,nama,pesan;
 	tabData Data;
+	ArrayofPlayer TP;
 	int i;
 	boolean alert,v_pengguna;
 	char c;
@@ -35,24 +38,18 @@ int main(){
 		i = 0;
 		EmptyStr(opt);
 		scanf("%s",opt);
-		do{
+		do {
 			scanf("%c",&c);
-		}while (c == ' ');
+		} while(c == ' ');
 		if (StrEq(opt,"highscore")){
 
 		}else if (StrEq(opt,"viewplayers")){
 			v_pengguna = true;
 		}else if (StrEq(opt,"add")){
 			EmptyStr(nama);
-			if ((c != '\n')&&(c == '"')){
-				i = 0;
-				do {
-					scanf("%c",&c);
-					if ((c != '"')&&(c != '\n')){
-						nama[i] = c;
-						i++;
-					}
-				} while ((c != '"')&&(c != '\n'));
+			if (c != '\n'){
+				scanf("%[^\"]s",nama);
+				scanf("%c",&c);
 			}
 			if (StrLength(nama)!=0){
 				if (!IsMemberData(Data,nama)){
@@ -101,9 +98,18 @@ int main(){
 				CopyStr("Input nama belum dimasukan. Format masukan 'delete <nama>'",pesan);
 			}
 		}else if (StrEq(opt,"play")){
-
+			if (c != '\n'){
+				do {
+					scanf("%[^\"]s",nama);
+					scanf("%c",&c);
+					
+					do {
+						scanf("%c",&c);
+					} while (c == ' ');
+				} while (c != '\n');
+			}
 		}else if (StrEq(opt,"start")){
-
+			StartGame(&TP);
 		}else if (StrEq(opt,"exit")){
 
 		}else {

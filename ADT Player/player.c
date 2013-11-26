@@ -2,16 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "player.h"
-#include "boolean.h"
-#include "kartu.h"
+#include "../boolean.h"
+#include "../adt_deck/adt-deck.h"
 
 /*	----- Selektor ----- */
-string NamePlayer(ArrayofPlayer T, index i) {
+/* String NamePlayer(ArrayofPlayer T, index i) {
 	/*	Kamus Lokal */
 
 	/*	Algoritma */
-	return (T).Player[i].Name;
-}
+	/*return (T).Player[i].Name;
+} */
 
 char CharacterofPlayer(ArrayofPlayer T, index i) {
 	/*	Kamus Lokal */
@@ -34,19 +34,19 @@ int ScorePlayer(ArrayofPlayer T, index i) {
 	return (T).Player[i].Score;
 }
 
-card CardonIndex(ArrayofPlayer T, index user, index cards) {
+Kartu KartuonIndex(ArrayofPlayer T, index user, index Kartus) {
 	/*	Kamus Lokal */
 
 	/* Algoritma */
-	if ((cards > MaxCard) || (cards < 1)) {
+	if ((Kartus > MaxKartu) || (Kartus < 1)) {
 		return false;
 	} else {
-		return (T).Player[user].OnHand[cards-1];
+		return (T).Player[user].OnHand[Kartus-1];
 	}
 }
 
 /* 	----- Pembuatan Array Kosong ----- */
-void MakeEmpty (ArrayofPlayer *T) {
+void MakeEmptyAP (ArrayofPlayer *T) {
 	/*	Kamus Lokal */
 	index i;
 
@@ -58,7 +58,7 @@ void MakeEmpty (ArrayofPlayer *T) {
 }
 
 /*	----- Predikat ----- */
-boolean IsMemberofArrayPlayer (ArrayofPlayer T, string Name) {
+boolean IsMemberofArrayPlayer (ArrayofPlayer T, String Name) {
 	/*	Kamus Lokal */
 	index i;
 	boolean Found;
@@ -89,26 +89,26 @@ boolean IsLessMinofArrayPlayer (ArrayofPlayer T) {
 	return (NbPlayer(T)<MinPlayer);
 }
 
-boolean IsMemberofCardonHand (ArrayofPlayer T, index i, card ID) {
+boolean IsMemberofKartuonHand (ArrayofPlayer T, index i, Kartu ID) {
 	/* Kamus Lokal */
 	boolean Found;
-	index idxcards;
+	index idxKartus;
 
 	/* Algoritma */
 	Found = false;
-	idxcards = 0;
-	while ((idxcards<MaxCard) && (!found)) {
-		if ((T).Player[i].OnHand[idxcards] == ID) {
+	idxKartus = 0;
+	while ((idxKartus<MaxKartu) && (!Found)) {
+		if ((T).Player[i].OnHand[idxKartus] == ID) {
 			Found = true;
 		} else {
-			idxcards++;
+			idxKartus++;
 		}
 	}
 	return Found;
 }
 
 /*	----- Pengolahan Elemen Array ----- */
-void InsertPlayer (ArrayofPlayer *T, string Name) {
+boolean InsertPlayer (ArrayofPlayer *T, String Name) {
 	/* Kamus Lokal */
 	index i;
 
@@ -118,13 +118,12 @@ void InsertPlayer (ArrayofPlayer *T, string Name) {
 		while (ConditionofPlayer(*T,i) != Absent) {
 			i++;
 		}
-		strcpy((T).Player[i].Name,Name);
+		CopyStr((*T).Player[i].Name,Name);
 		UpdateConditiononPlayer(T,i,Enabled);
 		UpdateScoreonPlayer(T,i,0);
-	} else if (IsMemberofArrayPlayer(*T,Name)) {
-		printf("%s sudah ada\n",Name);
+		return true;
 	} else {
-		printf("Input melebihi batas maksimum\n");
+		return false;
 	}
 }
 
@@ -149,13 +148,13 @@ void CharacterofPlayer (ArrayofPlayer *T, index i, char Character) {
 	(*T).Player[i].Character = Character;
 }
 
-void FillCardonPlayer (ArrayofPlayer *T, index i, card ID) {
+void FillKartuonPlayer (ArrayofPlayer *T, index i, Kartu ID) {
 	/* Kamus Lokal */
 	boolean Found = false;
 	index j = 0;
 
 	/* Algoritma */
-	while ((j<MaxCard) && (!Found)) {
+	while ((j<MaxKartu) && (!Found)) {
 		if ((*T).Player[i].OnHand[j]==Dummy) {
 			Found = true;
 		} else {
@@ -167,13 +166,13 @@ void FillCardonPlayer (ArrayofPlayer *T, index i, card ID) {
 	}
 }
 
-void TakeCardfromPlayer (ArrayofPlayer *T, index i, card ID) {
+void TakeKartufromPlayer (ArrayofPlayer *T, index i, Kartu ID) {
 	/* Kamus Lokal */
 	boolean Found = false;
 	index j = 0;
 
 	/* Algoritma */
-	while ((j<MaxCard) && (!Found)) {
+	while ((j<MaxKartu) && (!Found)) {
 		if ((*T).Player[i].OnHand[j]==ID) {
 			Found = true;
 		} else {
@@ -203,14 +202,14 @@ int NbGoldMiner (ArrayofPlayer T) {
 }
 
 /*	----- Penghitungan Kartu ----- */
-int CardOnHand (ArrayofPlayer T, index user) {
+int KartuOnHand (ArrayofPlayer T, index user) {
 	/* Kamus Lokal */
 	index i = 0;
 	boolean Found = false;
 
 	/* Algoritma */
-	while ((i<MaxCard) && !Found) {
-		if (CardonIndex(T,user,i)==Dummy) {
+	while ((i<MaxKartu) && !Found) {
+		if (KartuonIndex(T,user,i)==Dummy) {
 			Found = true;
 		} else {
 			i++;

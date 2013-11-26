@@ -31,7 +31,7 @@ boolean IsTableEmpty(tabData T)
 boolean IsTabFull(tabData T)
 //Menghasilkan true jika tabel penuh
 {
-	return (T).jumlahPemain == MaxPlayer;
+	return (T).jumlahPemain == MaxUser;
 }
 
 boolean IsMemberData(tabData T, String nama)

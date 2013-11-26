@@ -1,6 +1,6 @@
 #include "mesinkarakter.h"
 #include <stdio.h>
-#include "boolean.h"
+#include "../boolean.h"
 
 char CC;
 int ERROR_MESINKAR;

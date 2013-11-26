@@ -6,7 +6,7 @@
 #define DATA_H
 
 //Konstanta
-#define MaxPlayer 1000
+#define MaxUser 1000
 
 
 /* ****** Definisi Tipe Data **********
@@ -23,7 +23,7 @@ typedef struct {
 }Data;
 
 typedef struct{
-	Data TI[MaxPlayer + 1];
+	Data TI[MaxUser + 1];
 	int jumlahPemain;
 }tabData;
 
