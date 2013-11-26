@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "tools.h"
 #include "../mystring/mystring.h"
+#include "../boolean.h"
 
 void clrscr()
 /*	I.S. Sembarang
@@ -90,4 +91,27 @@ void header()
 		printf("%s\n",s[i]);
 		i++;
 	}
+}
+
+void BacaNama(String Nama)
+{
+	/* Kamus Lokal */
+	char c;
+	int i;
+	String input;
+	boolean done;
+	/* Algoritma */
+	i = 0;
+	done = false;
+	EmptyStr(input);
+	do {
+		c = getchar();
+		if ((c != '"')&&(c != '\n' )){
+			input[i] = c;
+			i++;
+		}
+	} while ((c != '"')&&(c != '\n' ));
+	//if (done){
+		CopyStr(input,Nama);
+	//}
 }

@@ -31,23 +31,29 @@ int main(){
 			v_pengguna = false;
 		}
 		gotoxy(5,34);
-		printf("> ");scanf("%s",opt);
+		printf("> ");
+		i = 0;
+		EmptyStr(opt);
+		scanf("%s",opt);
+		do{
+			scanf("%c",&c);
+		}while (c == ' ');
 		if (StrEq(opt,"highscore")){
 
 		}else if (StrEq(opt,"viewplayers")){
 			v_pengguna = true;
 		}else if (StrEq(opt,"add")){
 			EmptyStr(nama);
-			i = 0;
-			do {
-				c = getchar();
-				if ((c == ' ')&&(i==0)){
-					
-				}else if ((c != '\n')&&(c != '"')){
-					nama[i] = c;
-					i++;
-				}
-			}while(c!='\n');
+			if ((c != '\n')&&(c == '"')){
+				i = 0;
+				do {
+					scanf("%c",&c);
+					if ((c != '"')&&(c != '\n')){
+						nama[i] = c;
+						i++;
+					}
+				} while ((c != '"')&&(c != '\n'));
+			}
 			if (StrLength(nama)!=0){
 				if (!IsMemberData(Data,nama)){
 					if (addPengguna(&Data,nama,0,time(NULL))){
@@ -71,19 +77,24 @@ int main(){
 			}
 		}else if (StrEq(opt,"delete")){
 			EmptyStr(nama);
-			i = 0;
-			do {
-				c = getchar();
-			} while(c == ' ');
-			do {
-				c = getchar();
-				if ((c != '\n')&&(c != '"')){
-					nama[i] = c;
-					i++;
-				}
-			}while(c!='\n');
+			if ((c != '\n')&&(c == '"')){
+				i = 0;
+				do {
+					scanf("%c",&c);
+					if ((c != '"')&&(c != '\n')){
+						nama[i] = c;
+						i++;
+					}
+				} while ((c != '"')&&(c != '\n'));
+			}
 			if (StrLength(nama)!=0){
-
+				if ((IsMemberData(Data,nama))&&(!IsTableEmpty(Data))){
+					
+				}else{
+					alert = true;
+					EmptyStr(pesan);
+					CopyStr("Nama tidak ada!",pesan);
+				}
 			}else{
 				alert = true;
 				EmptyStr(pesan);

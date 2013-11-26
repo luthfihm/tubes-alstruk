@@ -2,6 +2,7 @@
 #define TOOLS_H
 
 #include "../boolean.h"
+#include "../mystring/mystring.h"
 
 #define clear "clear"
 
@@ -21,5 +22,7 @@ void canvas();
 */
 
 void header();
+
+void BacaNama(String Nama);
 
 #endif
