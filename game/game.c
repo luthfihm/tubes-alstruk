@@ -2,20 +2,22 @@
 #include <stdlib.h>
 #include <time.h>
 #include "game.h"
+#include "../adt_deck/adt-deck.h"
 void StartGame(ArrayofPlayer *T)
 {
 	String opt,pesan;
 	Dataplayer Player;
-	int i,id;
+	Deck D;
+	int i,id,x,y,stat;
 	boolean End,alert;
 	i = 0;
 	AcakKarakterPlayer(T);
 	End = false;
 	alert = false;
+	Board_Init(5,5);
 	do {
 		clrscr();
 		canvas();	
-		Board_Init(5,5);
 		Board_Print();
 		id = i % NbPlayer(*T);
 		Player = NamePlayer(*T,id);
@@ -29,11 +31,12 @@ void StartGame(ArrayofPlayer *T)
 		EmptyStr(opt);
 		scanf("%s",opt);
 		if (StrEq(opt,"putonboard")){
-
+			scanf("%d %d %d",&x,&y,&stat);
+			Board_PutCard(x-1,y-1,stat);
 		}else if (StrEq(opt,"viewmap")){
 
 		}else if (StrEq(opt,"putonplayer")){
-
+			
 		}else if (StrEq(opt,"discard")){
 
 		}else if (StrEq(opt,"draw")){
@@ -53,7 +56,7 @@ void StartGame(ArrayofPlayer *T)
 		}else {
 
 		}
-	} while (!End);
+	} while ((!End)&&(!Board_Win));
 }
 
 void AcakKarakterPlayer (ArrayofPlayer *T)
