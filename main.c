@@ -10,11 +10,11 @@
 
 int main(){
 	/* Kamus */
-	String opt,nama,pesan;
+	String opt,nama,pesan,player[10];
 	tabData Data;
 	ArrayofPlayer TP;
-	int i;
-	boolean alert,v_pengguna;
+	int i,jml_pemain;
+	boolean alert,v_pengguna,ready,valid;
 	char c;
 	/* Algoritma */
 	alert = false;
@@ -99,17 +99,47 @@ int main(){
 			}
 		}else if (StrEq(opt,"play")){
 			if (c != '\n'){
+				valid = true;
+				i = 1;
+				jml_pemain = 0;
 				do {
+					EmptyStr(nama);
 					scanf("%[^\"]s",nama);
 					scanf("%c",&c);
-					
+					if (IsMemberData(Data,nama)){
+						EmptyStr(player[i]);
+						CopyStr(player[i],nama);
+						jml_pemain++;
+						i++;
+					}else{
+						valid = false;
+					}
 					do {
 						scanf("%c",&c);
 					} while (c == ' ');
 				} while (c != '\n');
+				if ((valid)&&(jml_pemain>=3)&&(jml_pemain<=10)){
+					i = 1;
+					MakeEmptyAP(&TP);
+					while (i <= jml_pemain){
+						InsertPlayer(&TP,player[i]);
+						i++;
+					}
+					ready = true;
+				}else{
+					alert = true;
+					EmptyStr(pesan);
+					CopyStr("Nama atau jumlah pemain tidak valid",pesan);
+				}
 			}
 		}else if (StrEq(opt,"start")){
-			StartGame(&TP);
+			if (ready){
+				StartGame(&TP);
+			}else{
+				alert = true;
+				EmptyStr(pesan);
+				CopyStr("Game belum siap dimainkan",pesan);
+			}
 		}else if (StrEq(opt,"exit")){
 
 		}else {

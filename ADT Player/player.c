@@ -65,7 +65,7 @@ boolean IsMemberofArrayPlayer (ArrayofPlayer T, String Name) {
 	i = 0;
 	Found = false;
 	while ((i < MaxPlayer) && (!Found)) {
-		if (strcmp(NamePlayer(T,i),Name) == 0) {
+		if (StrEq(T.Player[i].Name,Name)) {
 			Found = true;
 		}
 		i = i + 1;
@@ -116,7 +116,7 @@ boolean InsertPlayer (ArrayofPlayer *T, String Name) {
 		while (ConditionofPlayer(*T,i) != Absent) {
 			i++;
 		}
-		CopyStr((*T).Player[i].Name,Name);
+		CopyStr(Name,(*T).Player[i].Name);
 		UpdateConditiononPlayer(T,i,Enabled);
 		UpdateScoreonPlayer(T,i,0);
 		return true;

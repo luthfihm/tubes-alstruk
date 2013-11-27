@@ -5,7 +5,10 @@ void StartGame(ArrayofPlayer *T)
 {
 	do {
 		clrscr();
-		Board_Init(2,10);
-		Board_Print()
-	} (getchar() != '\n')
+		canvas();	
+		Board_Init(5,5);
+		Board_Print();
+		gotoxy(5,34);
+		printf(">> ");	
+	} while (getchar() != '\n');
 }
