@@ -106,22 +106,22 @@ boolean IsMemberofKartuonHand (ArrayofPlayer T, index i, Kartu ID) {
 }
 
 /*	----- Pengolahan Elemen Array ----- */
-boolean InsertPlayer (ArrayofPlayer *T, String Name) {
+void InsertPlayer (ArrayofPlayer *T, String Name) {
 	/* Kamus Lokal */
 	index i;
+	char c;
 
 	/* Algoritma */
 	if ((!IsMemberofArrayPlayer(*T,Name)) && (!IsFullofArrayPlayer(*T))) {
-		i = 0;
-		while (ConditionofPlayer(*T,i) != Absent) {
+		i = NbPlayer(*T);
+		/*while (ConditionofPlayer(*T,i) != Absent) {
 			i++;
-		}
+		}*/
 		CopyStr(Name,(*T).Player[i].Name);
 		UpdateConditiononPlayer(T,i,Enabled);
 		UpdateScoreonPlayer(T,i,0);
-		return true;
-	} else {
-		return false;
+		NbPlayer(*T)++;
+		
 	}
 }
 

@@ -261,7 +261,7 @@ int loadData(tabData *T)
 	return ERROR_MESINBARIS;
 }
 
-int saveData(tabData T)
+void saveData(tabData T)
 /* Mensave tabel T ke file sesuai dengan definisi di mesinkarakter.h. Return 0 jika berhasil, 403 jika gagal
  */
 {
@@ -273,10 +273,7 @@ int saveData(tabData T)
 	//Program
 	F = fopen(FILENAME, "w");
 	
-	if (F == NULL)
-	{
-		return 403;
-	} else {
+	if (F != NULL){
 		fprintf(F, "%s\n", "@players");
 		
 		for (i = 1; i <= T.jumlahPemain; i++)
@@ -292,7 +289,6 @@ int saveData(tabData T)
 			strConcate(baris, score, baris);
 			strConcate(baris, " ", baris);
 			strConcate(baris, lastPlay, baris);
-			printf("%s\n", baris);
 			
 			//Tuliskan isi baris ke file
 			fprintf(F, "%s\n", baris);

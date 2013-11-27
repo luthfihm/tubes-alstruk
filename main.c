@@ -19,7 +19,7 @@ int main(){
 	/* Algoritma */
 	alert = false;
 	v_pengguna = false;
-	CreateEmptyData(&Data);
+	loadData(&Data);
 	do {
 		clrscr();
 		canvas();
@@ -54,6 +54,7 @@ int main(){
 			if (StrLength(nama)!=0){
 				if (!IsMemberData(Data,nama)){
 					if (addPengguna(&Data,nama,0,time(NULL))){
+						saveData(Data);
 						alert = true;
 						EmptyStr(pesan);
 						CopyStr("Nama berhasil ditambahkan!",pesan);
@@ -100,7 +101,7 @@ int main(){
 		}else if (StrEq(opt,"play")){
 			if (c != '\n'){
 				valid = true;
-				i = 1;
+				i = 0;
 				jml_pemain = 0;
 				do {
 					EmptyStr(nama);
@@ -108,7 +109,7 @@ int main(){
 					scanf("%c",&c);
 					if (IsMemberData(Data,nama)){
 						EmptyStr(player[i]);
-						CopyStr(player[i],nama);
+						CopyStr(nama,player[i]);
 						jml_pemain++;
 						i++;
 					}else{
@@ -119,10 +120,12 @@ int main(){
 					} while (c == ' ');
 				} while (c != '\n');
 				if ((valid)&&(jml_pemain>=3)&&(jml_pemain<=10)){
-					i = 1;
+					i = 0;
 					MakeEmptyAP(&TP);
-					while (i <= jml_pemain){
+					while (i < jml_pemain){
 						InsertPlayer(&TP,player[i]);
+						alert = true;
+						CopyStr(TP.Player[i].Name,pesan);
 						i++;
 					}
 					ready = true;

@@ -6,4 +6,6 @@
 
 void StartGame(ArrayofPlayer *T);
 
+void AcakKarakterPlayer (ArrayofPlayer *T);
+
 #endif

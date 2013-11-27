@@ -76,7 +76,7 @@ boolean IsMemberofKartuonHand (ArrayofPlayer T, index i, Kartu ID);
 /*	Mengecek apakah ada kartu
 
 /*	----- Pengolahan Elemen Array ----- */
-boolean InsertPlayer (ArrayofPlayer *T, String Name);
+void InsertPlayer (ArrayofPlayer *T, String Name);
 /*	I.S.	: T terdefinisi boleh kosong, Name terdefinisi
 	F.S.	: Array terisi player
 	Proses	: Memasukkan name ke indeks yang masih kosong, diset value

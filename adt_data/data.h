@@ -38,7 +38,7 @@ int loadData(tabData *T);
  * 				* 404: File Not Found atau Access denied
  */
  
-int saveData(tabData T);
+void saveData(tabData T);
 /* Mensave tabel ke file. Return 0 jika berhasil, 403 jika gagal Lokasi file didefinisikan di MesinKarakter
  */
 
