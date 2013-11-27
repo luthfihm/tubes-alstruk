@@ -1,4 +1,4 @@
-#include "../boolean.h"
+#include "boolean.h"
 #include <stdio.h>
 #include <time.h>
 #include "adt-deck.h"
@@ -6,11 +6,12 @@
 
 #define Nil 0
 #define MaxEl 68
+#define MaxChar 10
 #define TOP(S) (S).TOP
 #define Jenis(K) (K).Jenis
 #define ID(K) (K).ID
 #define Guna(K) (K).Guna
-
+#define NKartu(D) (D).NKartu
 
 /*
 typedef struct {
@@ -185,8 +186,8 @@ void ShuffleDeck (Deck *D){
 //Mengacak tumpukan kartu sebelum dipakai dalam permainan
 	int i,j;
 	srand(time(NULL));
-	for(i=1;i<=68;i++){
-		j=(rand()%68)+1;
+	for(i=1;i<=MaxEl;i++){
+		j=(rand()%MaxEl)+1;
 		TukarKartu(D,i,j);
 	}
 }
@@ -206,5 +207,380 @@ void TukarKartu(Deck *D, int i, int j){
 
 void DeckReady (Deck *D){
 	//Menyiapkan dek yang sudah diacak. Dalam hal ini, membuat deck menjadi sesuai dengan pengertian stack
-	TOP(*D)=68;
+	TOP(*D)=MaxEl;
 	}
+
+void DefaultChar(DeckChar *D, int NPemain){
+//Menyiapkan deck untuk pembagian character masing-masing pemain
+//Sudah Langsung DiShuffle
+	int JSabot; //Jumlah Saboteur dalam Permainan
+	int i;
+	int j;
+	if (NPemain>10){
+		printf("Permainan tidak bisa dilanjutkan. Pemain berlebih. \n");
+	}
+	else{
+		JSabot=(NPemain-1)/2;
+		TOP(*D)=NPemain;
+		for(i=1;i<=JSabot;i++){
+			Jenis((*D).T[i])='C';
+			ID((*D).T[i])=20;
+			Guna((*D).T[i])=-99; //Saboteur
+		}
+		for(i;i<=NPemain;i++){
+			Jenis((*D).T[i])='C';
+			ID((*D).T[i])=21;
+			Guna((*D).T[i])=-99; //GoldMiner
+		}
+		srand(time(NULL));
+		for(i=1;i<=MaxChar;i++){
+		j=(rand()%MaxChar)+1;
+				(*D).T[0].ID=(*D).T[i].ID;
+		(*D).T[0].Jenis=(*D).T[i].Jenis;
+		(*D).T[0].Guna=(*D).T[i].Guna;
+		(*D).T[i].ID=(*D).T[j].ID;
+		(*D).T[i].Jenis=(*D).T[j].Jenis;
+		(*D).T[i].Guna=(*D).T[j].Guna;
+		(*D).T[j].ID=(*D).T[0].ID;
+		(*D).T[j].Jenis=(*D).T[0].Jenis;
+		(*D).T[j].Guna=(*D).T[0].Guna;
+		}
+		
+	}
+}
+
+void DrawChar(DeckChar *D, Kartu *K){
+//Memilihkan peran untuk pemain dengan cara men-draw kartu
+	
+	(*K)=(*D).T[TOP(*D)];	
+	TOP(*D)=TOP(*D)-1;
+
+}
+
+void DefaultGold (DeckGold *D){
+//Menyiapkan untuk pembagian gold nugget kepada para pemenang.
+		TOP(*D)=MaxGold;
+		int i,j;
+		for(i=1;i<=16;i++){
+			Jenis((*D).T[i])='G';
+			ID((*D).T[i])=22;
+			Guna((*D).T[i])=1; //GOLD 1
+		}
+		for(i;i<=19;i++){
+			Jenis((*D).T[i])='G';
+			ID((*D).T[i])=23;
+			Guna((*D).T[i])=2; //GOLD 2
+		}
+		for(i;i<=28;i++){
+			Jenis((*D).T[i])='G';
+			ID((*D).T[i])=24;
+			Guna((*D).T[i])=3; //GOLD 3
+		}
+		srand(time(NULL));
+		for(i=1;i<=MaxGold;i++){
+		j=(rand()%MaxGold)+1;
+		(*D).T[0].Jenis=(*D).T[i].Jenis;
+		(*D).T[0].Guna=(*D).T[i].Guna;
+		(*D).T[i].ID=(*D).T[j].ID;
+		(*D).T[i].Jenis=(*D).T[j].Jenis;
+		(*D).T[i].Guna=(*D).T[j].Guna;
+		(*D).T[j].ID=(*D).T[0].ID;
+		(*D).T[j].Jenis=(*D).T[0].Jenis;
+		(*D).T[j].Guna=(*D).T[0].Guna;
+		}
+	}
+
+
+void DrawGold (DeckGold *D, Kartu *K1, Kartu *K2){
+//Memberikan gold nugget kepada para pemenang
+	
+	(*K1)=(*D).T[TOP(*D)];	
+	TOP(*D)=TOP(*D)-1;
+	
+	(*K2)=(*D).T[TOP(*D)];	
+	TOP(*D)=TOP(*D)-1;
+	
+	
+}
+
+void NamaKartu(Kartu K){
+//Menampilkan kartu di tangan user
+	switch(ID(K)){
+		case 1 :
+		printf("Path 1 ");
+		break;
+		case 2 :
+		printf("Path 2 ");
+		break;
+		case 3 :
+		printf("Path 3 ");
+		break;
+		case 4 :
+		printf("Path 4 ");
+		break;
+		case 5 :
+		printf("Path 5 ");
+		break;
+		case 6 :
+		printf("Path 6 ");
+		break;
+		case 7 :
+		printf("Path 7 ");
+		break;
+		case 8 :
+		printf("Path 8 ");
+		break;
+		case 9 :
+		printf("Path 9 ");
+		break;
+		case 10 :
+		printf("Path 10 ");
+		break;
+		case 11 :
+		printf("Path 11 ");
+		break;
+		case 12 :
+		printf("Path 12 ");
+		break;
+		case 13 :
+		printf("Path 13 ");
+		break;
+		case 14 :
+		printf("Path 14 ");
+		break;
+		case 15 :
+		printf("Path 15 ");
+		break;
+		case 16 :
+		printf("Path 16 ");
+		break;
+		case 17 :
+		printf("Action 1");
+		break;
+		case 18 :
+		printf("Action 2 ");
+		break;
+		case 19 :
+		printf("Action 3 ");
+		break;
+		case 20 :
+		printf("Char 1 ");
+		break;
+		case 21 :
+		printf("Char 2 ");
+		break;
+		case 22 :
+		printf("Gold 1 ");
+		break;
+		case 23 :
+		printf("Gold 2 ");
+		break;
+		case 24 :
+		printf("Gold 3 ");
+		break;
+	}
+}
+
+void GambarKartu(Kartu K){
+//Menampilkan ilustrasi kartu yang ada di tangan.
+	switch(ID(K)){
+		case 1 :
+		printf(" _______\n";
+		printf("|  | |  |\n");
+		printf("|__| |__|\n");
+		printf("|__   __|\n");
+		printf("|  | |  |\n"); 
+		printf("|__|_|__|\n");
+		break;
+		case 2 :
+		printf(" _______\n");
+		printf("|  | |  |\n");
+		printf("|  | |  |\n");
+		printf("|  | |  |\n");
+		printf("|  | |  |\n"); 
+		printf("|__|_|__|\n");
+		break;
+		case 3 :
+		printf(" _______\n");
+		printf("|       |\n");
+		printf("|_______|\n");
+		printf("|_______|\n");
+		printf("|       |\n"); 
+		printf("|_______|\n");
+		break;
+		case 4 :
+		printf(" _______\n");
+		printf("|       |\n");
+		printf("|  _____|\n");
+		printf("|  |  __|\n");
+		printf("|  | |  |\n"); 
+		printf("|__|_|__|\n");
+		
+		break;
+		case 5 :	
+		printf(" _______\n");
+		printf("|  | |  |\n");
+		printf("|  | |__|\n");
+		printf("|  |____|\n");
+		printf("|       |\n"); 
+		printf("|_______|\n");
+		break;
+		case 6 :
+		
+		printf(" _______\n");
+		printf("|  | |  |\n");
+		printf("|  | |__|\n");
+		printf("|  |  __|\n");
+		printf("|  | |  |\n");
+		printf("|__|_|__|\n");
+		break;
+		case 7 :
+		
+		printf(" _______\n");
+		printf("|  | |  |\n");
+		printf("|__| |__|\n");
+		printf("|_______|\n");
+		printf("|       |\n");
+		printf("|_______|\n");
+		break;
+		case 8 :
+		printf(" _______\n");
+		printf("|       |\n");
+		printf("|   _   |\n");
+		printf("|  | |  |\n");
+		printf("|  | |  |\n");
+		printf("|__|_|__|\n");
+		break;
+		case 9 :
+		printf(" _______\n");
+		printf("|       |\n");
+		printf("|   ____|\n");
+		printf("|  |____|\n");
+		printf("|       |\n");
+		printf("|_______|\n");
+		break;
+		case 10 :
+		printf(" _______\n");
+		printf("|  | |  |\n");
+		printf("|  |_|  |\n");
+		printf("|   _   |\n");
+		printf("|  | |  |\n");
+		printf("|__|_|__|\n");
+		break;
+		case 11 :
+		printf(" _______\n");
+		printf("|       |\n");
+		printf("|__   __|\n");
+		printf("|__| |__|\n");
+		printf("|       |\n");
+		printf("|_______|\n");
+		break;
+		case 12 :
+		printf(" _______\n");
+		printf("|  | |  |\n");
+		printf("|  |_|__|\n");
+		printf("|    |__|\n");
+		printf("|       |\n");
+		printf("|_______|\n");
+		break;
+		case 13 :
+		printf(" _______\n");
+		printf("|       |\n");
+		printf("|     __|\n");
+		printf("|   _|__|\n");
+		printf("|  | |  |\n");
+		printf("|__|_|__|\n");
+		break;
+		case 14 :
+	
+		printf(" _______\n");
+		printf("|  | |  |\n");
+		printf("|  |_|__|\n");
+		printf("|   _|__|\n");
+		printf("|  | |  |\n");
+		printf("|__|_|__|\n");
+		
+		break;
+		case 15 :
+		printf(" _______\n");
+		printf("|  | |  |\n");
+		printf("|__|_|__|\n");
+		printf("|__| |__|\n");
+		printf("|       |\n");
+		printf("|_______|\n");
+		break;
+		case 16 :
+		printf(" _______\n");
+		printf("|  | |  |\n");
+		printf("|__|_|__|\n");
+		printf("|__|_|__|\n");
+		printf("|  | |  |\n");
+		printf("|__|_|__|\n");
+		break;
+		case 17 :
+		printf(" _______\n");
+		printf("|_______|\n");
+		printf("|       |\n");
+		printf("|!BREAK!|\n");
+		printf("|_______|\n");
+		printf("|_______|\n");
+		break;
+		case 18 :
+		printf(" _______\n");
+		printf("|_______|\n");
+		printf("|       |\n");
+		printf("|!REPAIR|\n");
+		printf("|_______|\n");
+		printf("|_______|\n");
+		break;
+		case 19 :
+		printf(" _______\n");
+		printf("|_______|\n");
+		printf("|       |\n");
+		printf("|ViewMap|\n");
+		printf("|_______|\n");
+		printf("|_______|\n");
+		break;
+		case 20 :
+		printf(" _______\n");
+		printf("|_______|\n");
+		printf("|       |\n");
+		printf("| \Gold |n");
+		printf("|_______|\n");
+		printf("|_______|\n");
+		break;
+		case 21 :
+		printf(" _______\n");
+		printf("|_______|\n");
+		printf("|       |\n");
+		printf("| Sabot |\n");
+		printf("|_______|\n");
+		printf("|_______|\n");
+		break;
+		case 22 :
+		printf(" _______\n");
+		printf("|_______|\n");
+		printf("|       |\n");
+		printf("|   0   |\n");
+		printf("|_______|\n");
+		printf("|_______|\n");
+		break;
+		case 23 :
+		printf(" _______\n");
+		printf("|_______|\n");
+		printf("|       |\n");
+		printf("|  0 0  |\n");
+		printf("|_______|\n");
+		printf("|_______|\n");
+	
+		break;
+		case 24 :
+		printf(" _______\n");
+		printf("|_______|\n");
+		printf("|       |\n");
+		printf("| 0 0 0 |\n");
+		printf("|_______|\n");
+		printf("|_______|\n");
+		break;
+	}
+}
