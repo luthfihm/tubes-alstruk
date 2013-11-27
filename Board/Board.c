@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * */
-/* ADT Board v1.1			 					 */
+/* ADT Board v1.2			 					 */
 /* By Muntaha Ilmi 13512048  					 */
 /* Body 					 					 */
 /* Mengatur Board. Melingkupi pencetakan Board,  */
@@ -83,20 +83,6 @@ void Board_Print(void){
 	printf("\n");
 	#endif
 	for (i=0;i<5;i++){
-<<<<<<< HEAD
-=======
-		//Print border atas kartu
-		/*printf("  ");
-		for (j=0;j<9;j++){
-			printf(" ");
-			for (b=0;b<7;b++){
-				printf("%c",border1);
-			}
-			printf(" ");
-		}
-		PosY++;
-		gotoxy(PosX,PosY);*/
->>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 		for (a=0;a<5;a++){
 			//Print kolom berisi huruf baris
 			if (a==2)printf("%c ",'A'+i);
@@ -117,13 +103,6 @@ void Board_Print(void){
 									// Kebuka
 									tmp2=border2;
 									tmp4=border2;
-									/*if (Board_Card_Open[i][j]==-1){
-										//Batu
-										//???
-									} else {
-										//Emas
-										//???
-									}*/
 								}
 							} else {
 								if (Board_Card_Open[i][j]&1){
@@ -134,10 +113,6 @@ void Board_Print(void){
 									}
 								}
 							}
-<<<<<<< HEAD
-=======
-							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
->>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 					case 1: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -152,13 +127,6 @@ void Board_Print(void){
 									tmp2=border2;
 									tmp4=border2;
 									tmp5=border1;
-									/*if (Board_Card_Open[i][j]==-1){
-										//Batu
-										//???
-									} else {
-										//Emas
-										//???
-									}*/
 								}
 							} else {
 								if ((Board_Card_Open[i][j]>>1)&1){
@@ -182,10 +150,6 @@ void Board_Print(void){
 									}
 								}
 							}
-<<<<<<< HEAD
-=======
-							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp4,tmp4,border2);
->>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 					case 2: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -238,13 +202,9 @@ void Board_Print(void){
 									}
 								}
 							}
-<<<<<<< HEAD
 							if ((((Board_Card_Able[i][j]&Board_Card_Around[i][j])>>3)&1)&&(Board_Card_Open[i][j])){
 								tmp6=blank;
 							}
-=======
-							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp5,tmp4,tmp4,border2);
->>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 					case 3: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -257,13 +217,6 @@ void Board_Print(void){
 									// Kebuka
 									tmp2=border2;
 									tmp4=border2;
-									/*if (Board_Card_Open[i][j]==-1){
-										//Batu
-										//???
-									} else {
-										//Emas
-										//???
-									}*/
 								}
 							} else {
 								if ((Board_Card_Open[i][j]>>2)&1){
@@ -275,10 +228,6 @@ void Board_Print(void){
 									}
 								}
 							}
-<<<<<<< HEAD
-=======
-							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
->>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 					case 4: if (Board_Card_Open[i][j]<0){
 								// Card == Goalcard
@@ -296,13 +245,6 @@ void Board_Print(void){
 									if (!((Board_Card_Able[i][j]>>2)&1)){
 										tmp3=border1;
 									}
-									/*if (Board_Card_Open[i][j]==-1){
-										//Batu
-										//???
-									} else {
-										//Emas
-										//???
-									}*/
 								}
 							} else {
 								tmp1=border1;
@@ -319,16 +261,12 @@ void Board_Print(void){
 									tmp3=border1;
 								}
 								if ((Board_Card_Open[i][j])&&(j==0)){
-									if (Board_Card_Open[i+1][j]>=-2){
+									if ((Board_Card_Open[i+1][j]>=-2)&&(Board_Card_Able[i+1][j]&1)){
 										//Sebelah Goalcard kebuka
 										tmp3=blank;
 									}
 								}
 							}
-<<<<<<< HEAD
-=======
-							printf("%c%c%c%c%c%c%c%c",tmp3,tmp3,tmp2,tmp1,tmp2,tmp3,tmp3,border2);
->>>>>>> 21015c8d3c1c68922fb4f349fd08158632f62adc
 							break;
 				}
 				printf("%c%c%c%c%c%c%c%c",tmp1,tmp1,tmp2,tmp3,tmp4,tmp5,tmp5,tmp6);
@@ -376,13 +314,6 @@ void Board_PrintCard(int Stat, int PosY, int PosX){
 							// Kebuka
 							tmp2=border2;
 							tmp4=border2;
-							/*if (Stat==-1){
-								//Batu
-								//???
-							} else {
-								//Emas
-								//???
-							}*/
 						}
 					} else {
 						if (Stat&1){
@@ -407,13 +338,6 @@ void Board_PrintCard(int Stat, int PosY, int PosX){
 							tmp2=border2;
 							tmp4=border2;
 							tmp5=border1;
-							/*if (Stat==-1){
-								//Batu
-								//???
-							} else {
-								//Emas
-								//???
-							}*/
 						}
 					} else {
 						if ((Stat>>1)&1){
@@ -501,13 +425,6 @@ void Board_PrintCard(int Stat, int PosY, int PosX){
 							// Kebuka
 							tmp2=border2;
 							tmp4=border2;
-							/*if (Stat==-1){
-								//Batu
-								//???
-							} else {
-								//Emas
-								//???
-							}*/
 						}
 					} else {
 						if ((Stat>>2)&1){
@@ -533,13 +450,6 @@ void Board_PrintCard(int Stat, int PosY, int PosX){
 							tmp2=border2;
 							tmp4=border2;
 							tmp5=border1;
-							/*if (Stat==-1){
-								//Batu
-								//???
-							} else {
-								//Emas
-								//???
-							}*/
 						}
 					} else {
 						tmp1=border1;
