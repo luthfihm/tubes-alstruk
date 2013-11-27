@@ -52,7 +52,7 @@ boolean IsTabFull(tabData T);
 boolean IsMemberData(tabData T, String nama);
 //Menghasilkan true jika pengguna dengan nama tersebut sudah ada di tabel
 
-//***** Penambahan dan penghapusan pengguna *******/
+//***** Penambahan, penghapusan, edit data pengguna *******/
 boolean addPengguna(tabData *T, String nama, int score, time_t time);
 /* Menambahkan data pengguna ke dalam tabel. Tabel mungkin penuh. Jika 
  * data berhasil ditambahkan ke tabel menghasilkan true. Nama harus dicek terlebih dahulu keunikannya
@@ -61,6 +61,12 @@ boolean addPengguna(tabData *T, String nama, int score, time_t time);
 boolean delPengguna(tabData *T, String nama);
 /* Menghapus pengguna dengan nama pengguna dari tabel.
  */
+
+void editData(tabData *T, String nama, int newScore, time_t newTime);
+/* I.S :nama ada di tabel T
+ * F.S :score dan time milik nama diupdate menjadi newScore dan newTime
+ */
+ 
 
 void PrintPengguna(tabData T);
 

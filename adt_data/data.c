@@ -119,6 +119,25 @@ boolean delPengguna(tabData *T, String nama)
 	}
 }
 
+void editData(tabData *T, String nama, int newScore, time_t newTime)
+/* I.S :nama ada di tabel T
+ * F.S :score dan time milik nama diupdate menjadi newScore dan newTime
+ */
+{
+	//Kamus
+	int i;
+	
+	//Program
+	i = 1;
+	
+	while (!StrEq(T->TI[i].nama, nama))
+	{
+		i++;
+	}
+	
+	T->TI[i].score = newScore;
+	T->TI[i].time = newTime;
+}
 
 void PrintPengguna(tabData T)
 {
