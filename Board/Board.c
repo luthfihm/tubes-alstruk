@@ -522,12 +522,13 @@ int Board_Refresh(int PosY, int PosX){
 	return ans;
 }
 
-void Board_PutCard(int PosY, int PosX, int Stat){
+boolean Board_PutCard(int PosY, int PosX, int Stat){
 	/* Menaruh kartu di Board. Stat berisi kode kartu yang akan ditaruh */
 	int i,j,tmp,tmp2;
 	int a,b;
 	if (Board_Card_Open[PosY][PosX]){
 		//printf("Position occupied\n");
+		return false;
 	} else {
 		if (Board_Card_Flag[PosY][PosX]){
 			//Cek kartu terhubung langsung dengan start/tidak
@@ -581,11 +582,14 @@ void Board_PutCard(int PosY, int PosX, int Stat){
 					printf("Sabotaged!\n");
 					Board_Win=-1;
 				}
+				return true;
 			} else {
 				//printf("Wrong Shape\n");
+				return false;
 			}
 		} else {
 			//printf("Not Connected\n");
+			return false;
 		}
 	}
 }

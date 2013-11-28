@@ -9,6 +9,8 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "../boolean.h"
+
 int Board_Card_Open[10][15]; /* Kode isi dari kartu yang ditaruh */
 int Board_Card_Around[10][15]; /* kartu sebelah kosong/tdk */
 int Board_Card_Able[10][15]; /* Jalan mana aja yang kebuka */
@@ -54,7 +56,7 @@ int Board_Refresh(int PosY, int PosX);
 	/* Untuk mengantisipasi Rockfall, sebelum dipanggil, 
 	   Card_Able, Card_Around, dan Card_Flag dikosongkan dulu. */
 
-void Board_PutCard(int PosY, int PosX, int Stat);
+boolean Board_PutCard(int PosY, int PosX, int Stat);
 	/* Menaruh kartu di Board. Stat berisi kode kartu yang akan ditaruh */
 
 int Board_Viewmap(int pos);
@@ -64,6 +66,6 @@ int Board_Viewmap(int pos);
 		1 = Goalcard tengah
 		2 = Goalcard paling bawah */
 	/* Penjelasan output :
-		0 = Yang dilihat kartu Batu
-		1 = Yang dilihat kartu Gold */
+		0 = Yang dilihat kartu Gold
+		1 = Yang dilihat kartu Batu */
 #endif

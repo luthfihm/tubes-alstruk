@@ -87,7 +87,16 @@ int main(){
 			}
 			if (StrLength(nama)!=0){
 				if ((IsMemberData(Data,nama))&&(!IsTableEmpty(Data))){
-					
+					if (delPengguna(&Data,nama)){
+						saveData(Data);
+						alert = true;
+						EmptyStr(pesan);
+						CopyStr("Nama berhasil dihapus!",pesan);
+					}else{
+						alert = true;
+						EmptyStr(pesan);
+						CopyStr("Nama gagal dihapus!",pesan);
+					}
 				}else{
 					alert = true;
 					EmptyStr(pesan);
@@ -124,11 +133,12 @@ int main(){
 					MakeEmptyAP(&TP);
 					while (i < jml_pemain){
 						InsertPlayer(&TP,player[i]);
-						alert = true;
-						CopyStr(TP.Player[i].Name,pesan);
 						i++;
 					}
 					ready = true;
+					alert = true;
+					EmptyStr(pesan);
+					CopyStr("Game siap dimainkan",pesan);
 				}else{
 					alert = true;
 					EmptyStr(pesan);
@@ -138,13 +148,22 @@ int main(){
 		}else if (StrEq(opt,"start")){
 			if (ready){
 				StartGame(&TP);
+				i = 0;
+				while (i < NbPlayer(TP)){
+					editData(&Data,TP.Player[i].Name,ScorePlayer(TP,i),time(NULL));
+					i++;
+				}
+				saveData(Data);
+				MakeEmptyAP(&TP);
+				jml_pemain = 0;
+				ready = false;
 			}else{
 				alert = true;
 				EmptyStr(pesan);
 				CopyStr("Game belum siap dimainkan",pesan);
 			}
 		}else if (StrEq(opt,"exit")){
-
+			saveData(Data);
 		}else {
 			alert = true;
 			EmptyStr(pesan);

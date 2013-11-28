@@ -1,6 +1,7 @@
-#include "boolean.h"
+#include "../boolean.h"
 #include <stdio.h>
 #include <time.h>
+#include "../mystring/mystring.h"
 
 // Bentuk susunan kartu dalam bentuk implementasi Deck
 
@@ -103,8 +104,8 @@ void DefaultGold (DeckGold *D);
 void DrawGold (DeckGold *D, Kartu *K1, Kartu *K2);
 //Memberikan gold nugget kepada para pemenang
 
-void NamaKartu(Kartu K);
+void NamaKartu(Kartu K,String Nama);
 //Menampilkan kartu di tangan user
 
-void GambarKartu(Kartu K);
+void GambarKartu(Kartu K,int x,int y);
 //Menampilkan ilustrasi kartu yang ada di tangan.

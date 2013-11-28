@@ -1,7 +1,8 @@
-#include "boolean.h"
+#include "../boolean.h"
 #include <stdio.h>
 #include <time.h>
 #include "adt-deck.h"
+#include "../mystring/mystring.h"
 // Bentuk susunan kartu dalam bentuk implementasi Deck
 
 #define Nil 0
@@ -96,17 +97,17 @@ void DefaultDeck (Deck *D){
 	for(i=10;i<=12;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=3;
-			Guna((*D).T[i])=11;
+			Guna((*D).T[i])=26;
 	}
 	for(i=13;i<=16;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=4;
-			Guna((*D).T[i])=13;
+			Guna((*D).T[i])=28;
 	}
 	for(i=17;i<=21;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=5;
-			Guna((*D).T[i])=7;
+			Guna((*D).T[i])=25;
 	}
 	for(i=22;i<=26;i++){
 			Jenis((*D).T[i])='P';
@@ -121,17 +122,17 @@ void DefaultDeck (Deck *D){
 	for(i=32;i<=32;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=8;
-			Guna((*D).T[i])=5;
+			Guna((*D).T[i])=4;
 	}
 	for(i=33;i<=33;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=9;
-			Guna((*D).T[i])=5;
+			Guna((*D).T[i])=8;
 	}
 	for(i=34;i<=34;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=10;
-			Guna((*D).T[i])=20;
+			Guna((*D).T[i])=5;
 	}
 	for(i=35;i<=35;i++){
 			Jenis((*D).T[i])='P';
@@ -141,7 +142,7 @@ void DefaultDeck (Deck *D){
 	for(i=36;i<=37;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=12;
-			Guna((*D).T[i])=24;
+			Guna((*D).T[i])=9;
 	}
 	for(i=38;i<=38;i++){
 			Jenis((*D).T[i])='P';
@@ -151,17 +152,17 @@ void DefaultDeck (Deck *D){
 	for(i=39;i<=39;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=14;
-			Guna((*D).T[i])=21;
+			Guna((*D).T[i])=13;
 	}
 	for(i=40;i<=40;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=15;
-			Guna((*D).T[i])=26;
+			Guna((*D).T[i])=11;
 	}
 	for(i=41;i<=41;i++){
 			Jenis((*D).T[i])='P';
 			ID((*D).T[i])=16;
-			Guna((*D).T[i])=30;
+			Guna((*D).T[i])=15;
 	}
 	for(i=42;i<=50;i++){
 			Jenis((*D).T[i])='A';
@@ -235,15 +236,15 @@ void DefaultChar(DeckChar *D, int NPemain){
 		srand(time(NULL));
 		for(i=1;i<=MaxChar;i++){
 		j=(rand()%MaxChar)+1;
-				(*D).T[0].ID=(*D).T[i].ID;
-		(*D).T[0].Jenis=(*D).T[i].Jenis;
-		(*D).T[0].Guna=(*D).T[i].Guna;
-		(*D).T[i].ID=(*D).T[j].ID;
-		(*D).T[i].Jenis=(*D).T[j].Jenis;
-		(*D).T[i].Guna=(*D).T[j].Guna;
-		(*D).T[j].ID=(*D).T[0].ID;
-		(*D).T[j].Jenis=(*D).T[0].Jenis;
-		(*D).T[j].Guna=(*D).T[0].Guna;
+			(*D).T[0].ID=(*D).T[i].ID;
+			(*D).T[0].Jenis=(*D).T[i].Jenis;
+			(*D).T[0].Guna=(*D).T[i].Guna;
+			(*D).T[i].ID=(*D).T[j].ID;
+			(*D).T[i].Jenis=(*D).T[j].Jenis;
+			(*D).T[i].Guna=(*D).T[j].Guna;
+			(*D).T[j].ID=(*D).T[0].ID;
+			(*D).T[j].Jenis=(*D).T[0].Jenis;
+			(*D).T[j].Guna=(*D).T[0].Guna;
 		}
 		
 	}
@@ -278,309 +279,313 @@ void DefaultGold (DeckGold *D){
 		}
 		srand(time(NULL));
 		for(i=1;i<=MaxGold;i++){
-		j=(rand()%MaxGold)+1;
-		(*D).T[0].Jenis=(*D).T[i].Jenis;
-		(*D).T[0].Guna=(*D).T[i].Guna;
-		(*D).T[i].ID=(*D).T[j].ID;
-		(*D).T[i].Jenis=(*D).T[j].Jenis;
-		(*D).T[i].Guna=(*D).T[j].Guna;
-		(*D).T[j].ID=(*D).T[0].ID;
-		(*D).T[j].Jenis=(*D).T[0].Jenis;
-		(*D).T[j].Guna=(*D).T[0].Guna;
+			j=(rand()%MaxGold)+1;
+			(*D).T[0].ID=(*D).T[i].ID;
+			(*D).T[0].Jenis=(*D).T[i].Jenis;
+			(*D).T[0].Guna=(*D).T[i].Guna;
+			(*D).T[i].ID=(*D).T[j].ID;
+			(*D).T[i].Jenis=(*D).T[j].Jenis;
+			(*D).T[i].Guna=(*D).T[j].Guna;
+			(*D).T[j].ID=(*D).T[0].ID;
+			(*D).T[j].Jenis=(*D).T[0].Jenis;
+			(*D).T[j].Guna=(*D).T[0].Guna;
 		}
-	}
+}
 
 
 void DrawGold (DeckGold *D, Kartu *K1, Kartu *K2){
 //Memberikan gold nugget kepada para pemenang
-	
 	(*K1)=(*D).T[TOP(*D)];	
 	TOP(*D)=TOP(*D)-1;
-	
+
 	(*K2)=(*D).T[TOP(*D)];	
 	TOP(*D)=TOP(*D)-1;
-	
-	
 }
 
-void NamaKartu(Kartu K){
+void NamaKartu(Kartu K,String Nama){
 //Menampilkan kartu di tangan user
 	switch(ID(K)){
 		case 1 :
-		printf("Path 1 ");
+		CopyStr("Path 1",Nama);
 		break;
 		case 2 :
-		printf("Path 2 ");
+		CopyStr("Path 2",Nama);
 		break;
 		case 3 :
-		printf("Path 3 ");
+		CopyStr("Path 3",Nama);
 		break;
 		case 4 :
-		printf("Path 4 ");
+		CopyStr("Path 4",Nama);
 		break;
 		case 5 :
-		printf("Path 5 ");
+		CopyStr("Path 5",Nama);
 		break;
 		case 6 :
-		printf("Path 6 ");
+		CopyStr("Path 6",Nama);
 		break;
 		case 7 :
-		printf("Path 7 ");
+		CopyStr("Path 7",Nama);
 		break;
 		case 8 :
-		printf("Path 8 ");
+		CopyStr("Path 8",Nama);
 		break;
 		case 9 :
-		printf("Path 9 ");
+		CopyStr("Path 9",Nama);
 		break;
 		case 10 :
-		printf("Path 10 ");
+		CopyStr("Path 10",Nama);
 		break;
 		case 11 :
-		printf("Path 11 ");
+		CopyStr("Path 11",Nama);
 		break;
 		case 12 :
-		printf("Path 12 ");
+		CopyStr("Path 12",Nama);
 		break;
 		case 13 :
-		printf("Path 13 ");
+		CopyStr("Path 13",Nama);
 		break;
 		case 14 :
-		printf("Path 14 ");
+		CopyStr("Path 14",Nama);
 		break;
 		case 15 :
-		printf("Path 15 ");
+		CopyStr("Path 15",Nama);
 		break;
 		case 16 :
-		printf("Path 16 ");
+		CopyStr("Path 16",Nama);
 		break;
 		case 17 :
-		printf("Action 1");
+		CopyStr("Action 1",Nama);
 		break;
 		case 18 :
-		printf("Action 2 ");
+		CopyStr("Action 2",Nama);
 		break;
 		case 19 :
-		printf("Action 3 ");
+		CopyStr("Action 3",Nama);
 		break;
 		case 20 :
-		printf("Char 1 ");
+		CopyStr("Char 1",Nama);
 		break;
 		case 21 :
-		printf("Char 2 ");
+		CopyStr("Char 2",Nama);
 		break;
 		case 22 :
-		printf("Gold 1 ");
+		CopyStr("Gold 1",Nama);
 		break;
 		case 23 :
-		printf("Gold 2 ");
+		CopyStr("Gold 2",Nama);
 		break;
 		case 24 :
-		printf("Gold 3 ");
+		CopyStr("Gold 3",Nama);
 		break;
 	}
 }
 
-void GambarKartu(Kartu K){
+void GambarKartu(Kartu K,int x,int y){
 //Menampilkan ilustrasi kartu yang ada di tangan.
+	String P[6];
+	int i;
 	switch(ID(K)){
 		case 1 :
-		printf(" _______\n";
-		printf("|  | |  |\n");
-		printf("|__| |__|\n");
-		printf("|__   __|\n");
-		printf("|  | |  |\n"); 
-		printf("|__|_|__|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|__| |__|",P[2]);
+		CopyStr("|__   __|",P[3]);
+		CopyStr("|  | |  |",P[4]); 
+		CopyStr("|__|_|__|",P[5]);
 		break;
 		case 2 :
-		printf(" _______\n");
-		printf("|  | |  |\n");
-		printf("|  | |  |\n");
-		printf("|  | |  |\n");
-		printf("|  | |  |\n"); 
-		printf("|__|_|__|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|  | |  |",P[2]);
+		CopyStr("|  | |  |",P[3]);
+		CopyStr("|  | |  |",P[4]); 
+		CopyStr("|__|_|__|",P[5]);
 		break;
 		case 3 :
-		printf(" _______\n");
-		printf("|       |\n");
-		printf("|_______|\n");
-		printf("|_______|\n");
-		printf("|       |\n"); 
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|       |",P[1]);
+		CopyStr("|_______|",P[2]);
+		CopyStr("|_______|",P[3]);
+		CopyStr("|       |",P[4]); 
+		CopyStr("|_______|",P[5]);
 		break;
 		case 4 :
-		printf(" _______\n");
-		printf("|       |\n");
-		printf("|  _____|\n");
-		printf("|  |  __|\n");
-		printf("|  | |  |\n"); 
-		printf("|__|_|__|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|       |",P[1]);
+		CopyStr("|  _____|",P[2]);
+		CopyStr("|  |  __|",P[3]);
+		CopyStr("|  | |  |",P[4]); 
+		CopyStr("|__|_|__|",P[5]);
 		
 		break;
 		case 5 :	
-		printf(" _______\n");
-		printf("|  | |  |\n");
-		printf("|  | |__|\n");
-		printf("|  |____|\n");
-		printf("|       |\n"); 
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|  | |__|",P[2]);
+		CopyStr("|  |____|",P[3]);
+		CopyStr("|       |",P[4]); 
+		CopyStr("|_______|",P[5]);
 		break;
 		case 6 :
 		
-		printf(" _______\n");
-		printf("|  | |  |\n");
-		printf("|  | |__|\n");
-		printf("|  |  __|\n");
-		printf("|  | |  |\n");
-		printf("|__|_|__|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|  | |__|",P[2]);
+		CopyStr("|  |  __|",P[3]);
+		CopyStr("|  | |  |",P[4]);
+		CopyStr("|__|_|__|",P[5]);
 		break;
 		case 7 :
 		
-		printf(" _______\n");
-		printf("|  | |  |\n");
-		printf("|__| |__|\n");
-		printf("|_______|\n");
-		printf("|       |\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|__| |__|",P[2]);
+		CopyStr("|_______|",P[3]);
+		CopyStr("|       |",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 8 :
-		printf(" _______\n");
-		printf("|       |\n");
-		printf("|   _   |\n");
-		printf("|  | |  |\n");
-		printf("|  | |  |\n");
-		printf("|__|_|__|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|       |",P[1]);
+		CopyStr("|   _   |",P[2]);
+		CopyStr("|  | |  |",P[3]);
+		CopyStr("|  | |  |",P[4]);
+		CopyStr("|__|_|__|",P[5]);
 		break;
 		case 9 :
-		printf(" _______\n");
-		printf("|       |\n");
-		printf("|   ____|\n");
-		printf("|  |____|\n");
-		printf("|       |\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|       |",P[1]);
+		CopyStr("|   ____|",P[2]);
+		CopyStr("|  |____|",P[3]);
+		CopyStr("|       |",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 10 :
-		printf(" _______\n");
-		printf("|  | |  |\n");
-		printf("|  |_|  |\n");
-		printf("|   _   |\n");
-		printf("|  | |  |\n");
-		printf("|__|_|__|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|  |_|  |",P[2]);
+		CopyStr("|   _   |",P[3]);
+		CopyStr("|  | |  |",P[4]);
+		CopyStr("|__|_|__|",P[5]);
 		break;
 		case 11 :
-		printf(" _______\n");
-		printf("|       |\n");
-		printf("|__   __|\n");
-		printf("|__| |__|\n");
-		printf("|       |\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|       |",P[1]);
+		CopyStr("|__   __|",P[2]);
+		CopyStr("|__| |__|",P[3]);
+		CopyStr("|       |",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 12 :
-		printf(" _______\n");
-		printf("|  | |  |\n");
-		printf("|  |_|__|\n");
-		printf("|    |__|\n");
-		printf("|       |\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|  |_|__|",P[2]);
+		CopyStr("|    |__|",P[3]);
+		CopyStr("|       |",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 13 :
-		printf(" _______\n");
-		printf("|       |\n");
-		printf("|     __|\n");
-		printf("|   _|__|\n");
-		printf("|  | |  |\n");
-		printf("|__|_|__|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|       |",P[1]);
+		CopyStr("|     __|",P[2]);
+		CopyStr("|   _|__|",P[3]);
+		CopyStr("|  | |  |",P[4]);
+		CopyStr("|__|_|__|",P[5]);
 		break;
 		case 14 :
 	
-		printf(" _______\n");
-		printf("|  | |  |\n");
-		printf("|  |_|__|\n");
-		printf("|   _|__|\n");
-		printf("|  | |  |\n");
-		printf("|__|_|__|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|  |_|__|",P[2]);
+		CopyStr("|   _|__|",P[3]);
+		CopyStr("|  | |  |",P[4]);
+		CopyStr("|__|_|__|",P[5]);
 		
 		break;
 		case 15 :
-		printf(" _______\n");
-		printf("|  | |  |\n");
-		printf("|__|_|__|\n");
-		printf("|__| |__|\n");
-		printf("|       |\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|__|_|__|",P[2]);
+		CopyStr("|__| |__|",P[3]);
+		CopyStr("|       |",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 16 :
-		printf(" _______\n");
-		printf("|  | |  |\n");
-		printf("|__|_|__|\n");
-		printf("|__|_|__|\n");
-		printf("|  | |  |\n");
-		printf("|__|_|__|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|  | |  |",P[1]);
+		CopyStr("|__|_|__|",P[2]);
+		CopyStr("|__|_|__|",P[3]);
+		CopyStr("|  | |  |",P[4]);
+		CopyStr("|__|_|__|",P[5]);
 		break;
 		case 17 :
-		printf(" _______\n");
-		printf("|_______|\n");
-		printf("|       |\n");
-		printf("|!BREAK!|\n");
-		printf("|_______|\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|_______|",P[1]);
+		CopyStr("|       |",P[2]);
+		CopyStr("|!BREAK!|",P[3]);
+		CopyStr("|_______|",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 18 :
-		printf(" _______\n");
-		printf("|_______|\n");
-		printf("|       |\n");
-		printf("|!REPAIR|\n");
-		printf("|_______|\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|_______|",P[1]);
+		CopyStr("|       |",P[2]);
+		CopyStr("|!REPAIR|",P[3]);
+		CopyStr("|_______|",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 19 :
-		printf(" _______\n");
-		printf("|_______|\n");
-		printf("|       |\n");
-		printf("|ViewMap|\n");
-		printf("|_______|\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|_______|",P[1]);
+		CopyStr("|       |",P[2]);
+		CopyStr("|ViewMap|",P[3]);
+		CopyStr("|_______|",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 20 :
-		printf(" _______\n");
-		printf("|_______|\n");
-		printf("|       |\n");
-		printf("| \Gold |n");
-		printf("|_______|\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|_______|",P[1]);
+		CopyStr("|       |",P[2]);
+		CopyStr("|  Gold |",P[3]);
+		CopyStr("|_______|",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 21 :
-		printf(" _______\n");
-		printf("|_______|\n");
-		printf("|       |\n");
-		printf("| Sabot |\n");
-		printf("|_______|\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|_______|",P[1]);
+		CopyStr("|       |",P[2]);
+		CopyStr("| Sabot |",P[3]);
+		CopyStr("|_______|",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 22 :
-		printf(" _______\n");
-		printf("|_______|\n");
-		printf("|       |\n");
-		printf("|   0   |\n");
-		printf("|_______|\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|_______|",P[1]);
+		CopyStr("|       |",P[2]);
+		CopyStr("|   0   |",P[3]);
+		CopyStr("|_______|",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
 		case 23 :
-		printf(" _______\n");
-		printf("|_______|\n");
-		printf("|       |\n");
-		printf("|  0 0  |\n");
-		printf("|_______|\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|_______|",P[1]);
+		CopyStr("|       |",P[2]);
+		CopyStr("|  0 0  |",P[3]);
+		CopyStr("|_______|",P[4]);
+		CopyStr("|_______|",P[5]);
 	
 		break;
 		case 24 :
-		printf(" _______\n");
-		printf("|_______|\n");
-		printf("|       |\n");
-		printf("| 0 0 0 |\n");
-		printf("|_______|\n");
-		printf("|_______|\n");
+		CopyStr(" _______",P[0]);
+		CopyStr("|_______|",P[1]);
+		CopyStr("|       |",P[2]);
+		CopyStr("| 0 0 0 |",P[3]);
+		CopyStr("|_______|",P[4]);
+		CopyStr("|_______|",P[5]);
 		break;
+	}
+	for (i = 0;i < 6;i++){
+		gotoxy(x,y+i);
+		printf("%s\n",P[i]);
 	}
 }

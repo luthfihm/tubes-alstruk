@@ -135,7 +135,7 @@ void editData(tabData *T, String nama, int newScore, time_t newTime)
 		i++;
 	}
 	
-	T->TI[i].score = newScore;
+	T->TI[i].score += newScore;
 	T->TI[i].time = newTime;
 }
 
