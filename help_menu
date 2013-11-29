@@ -1,0 +1,24 @@
+highscores
+Menampilkan 10 pemain dengan score tertinggi
+
+viewplayers
+Menampilkan seluruh pemain
+
+add <nama>
+Digunakan untuk menambahkan pemain
+<nama> Nama pemain baru. Jika terdapat spasi nama harus diapit dengan tanda petik 2.
+
+delete <nama>
+Digunakan untuk menghapus pemain
+<nama> Nama pemain yang akan dihapus. Jika terdapat spasi pada nama, nama harus diapit tanda petik 2.
+
+play <nama-1> <nama-2> <nama-3> ... <nama-n>
+Digunakan untuk mempersiapkan permainan
+<nama-1..n> Nama pemain yang akan mengikuti permainan.
+
+start
+Digunakan untuk memulai permainan
+
+exit
+Digunakan untuk keluar dari game
+
