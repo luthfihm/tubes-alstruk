@@ -19,4 +19,8 @@ void ScoreBoard (ArrayofPlayer T,char Winner);
 
 void ShowPlayerList (ArrayofPlayer T);
 
+void GameHelp ();
+
+void HelpHeader ();
+
 #endif

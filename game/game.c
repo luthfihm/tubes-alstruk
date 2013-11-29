@@ -10,13 +10,14 @@ void StartGame(ArrayofPlayer *T)
 	Deck D;
 	Kartu C;
 	int i,j,id,x,y,stat,g,ids;
-	boolean End,alert,Sudah_Ambil,Keluar_Kartu;
+	boolean End,alert,Sudah_Ambil,Keluar_Kartu,help;
 	i = 0;
 	AcakKarakterPlayer(T);
 	End = false;
 	alert = false;
 	Sudah_Ambil = false;
 	Keluar_Kartu = false;
+	help = false;
 	CreateEmpty(&D);
 	DefaultDeck(&D);
 	ShuffleDeck(&D);
@@ -25,7 +26,13 @@ void StartGame(ArrayofPlayer *T)
 	Board_Init(5,5);
 	do {
 		clrscr();
-		canvas();	
+		canvas();
+		if (help){
+			GameHelp();
+			help = false;
+			clrscr();
+			canvas();
+		}
 		Board_Print();
 		id = i % NbPlayer(*T);
 		Player = NamePlayer(*T,id);
@@ -304,6 +311,8 @@ void StartGame(ArrayofPlayer *T)
 			}
 		}else if (StrEq(opt,"cancel")){
 			End = true;
+		}else if (StrEq(opt,"help")){
+			help = true;
 		}else {
 			alert = true;
 			EmptyStr(pesan);
@@ -539,6 +548,107 @@ void ShowPlayerList (ArrayofPlayer T)
 		}else if (ConditionofPlayer(T,i) == Disabled){
 			printf("Status : Disabled");
 		}
+		i++;
+	}
+}
+
+void GameHelp ()
+
+{
+	char *head[] = {
+		"  ____                        ___           _                   _   _             ",
+		" / ___| __ _ _ __ ___   ___  |_ _|_ __  ___| |_ _ __ _   _  ___| |_(_) ___  _ __  ",
+		"| |  _ / _` | '_ ` _ \\ / _ \\  | || '_ \\/ __| __| '__| | | |/ __| __| |/ _ \\| '_ \\ ",
+		"| |_| | (_| | | | | | |  __/  | || | | \\__ \\ |_| |  | |_| | (__| |_| | (_) | | | |",
+		" \\____|\\__,_|_| |_| |_|\\___| |___|_| |_|___/\\__|_|   \\__,_|\\___|\\__|_|\\___/|_| |_|",
+		""
+	};
+	char *help[] = {
+		"putonboard <id-card> <koordinat y> <koordinat x> <posisi>",
+		"Menaruh kartu ke papan",
+		"<id-card> Id kartu yang akan ditaruh ke papan.",
+		"<koordinat y> posisi baris tempat kartu ditempatkan",
+		"<koordinat x>  posisi kolom tempat kartu ditempatkan",
+		"<posisi> 0:Kartu diletakkan apa adanya ; 180:Kartu diputar 180 derajat sebelum diletakkan",
+		" ",
+		"viewmap <koordinat-goalcard-y> <koordinat-goalcard-y>",
+		"Untuk mengetahui apakah goalcard tersebut adalah batu atau emas.",
+		"Hanya dapat dijalankan jika player mempunyai kartu viewmap.",
+		"<koordinat-goalcard-y> posisi baris goalcard yang akan dilihat",
+		"<koordinat-goalcard-x> posisi kolom goalcard yang akan dilihat",
+		" ",
+		"discard <id-card>",
+		"Perintah ini digunakan untuk membuang kartu dari tangan ke discardpile",
+		"<id-card> ID kartu yang ingin dibuang",
+		" ",
+		"putonplayer <id-card> <nama-player-target>",
+		"Menaruh action card repairtool / breaktool ke player",
+		"<id-card> Id kartu yang akan diberikan ke pemain",
+		"<nama-player-target> Nama player yang akan diberikan action card.",
+		"Jika ingin memberikan action card kepada diri sendiri dapat diisi dengan \"me\".",
+		"Jika nama player mengandung spasi apitlah dengan tanda kutip. Misal: \"Nama Pemain\"",
+		" ",
+		"draw",
+		"Untuk mengambil kartu dari deck ke tangan",
+		" ",
+		"viewchar",
+		"Untuk melihat role pemain, apakah anda menjadi Gold Miner atau saboteur",
+		" ",
+		"finish",
+		"Untuk mengakhiri turn.",
+		" ",
+		"cancel",
+		"untuk keluar dari game",
+		""
+	};
+	int x,y,i;
+	while (getchar() != '\n'){
+
+	}
+	do {
+		x = 5;
+		y = 9;
+		i = 0;
+		HelpHeader();
+		while (!StrEq(help[i],"")){
+			if (StrEq(help[i],"draw")){
+				y -= 24;
+				gotoxy(5,34);
+				printf("Press enter to next page... ");
+				do {
+
+				}while (getchar() != '\n');
+				clrscr();
+				canvas();
+				HelpHeader();
+			}
+			gotoxy(x,y+i);
+			printf("%s",help[i]);
+			i++;
+		}
+		gotoxy(5,34);
+		printf("Press enter to continue... ");
+	} while(getchar() != '\n');
+}
+
+void HelpHeader ()
+
+{
+	char *head[] = {
+		"  ____                        ___           _                   _   _             ",
+		" / ___| __ _ _ __ ___   ___  |_ _|_ __  ___| |_ _ __ _   _  ___| |_(_) ___  _ __  ",
+		"| |  _ / _` | '_ ` _ \\ / _ \\  | || '_ \\/ __| __| '__| | | |/ __| __| |/ _ \\| '_ \\ ",
+		"| |_| | (_| | | | | | |  __/  | || | | \\__ \\ |_| |  | |_| | (__| |_| | (_) | | | |",
+		" \\____|\\__,_|_| |_| |_|\\___| |___|_| |_|___/\\__|_|   \\__,_|\\___|\\__|_|\\___/|_| |_|",
+		""
+	};
+	int i,x,y;
+	x = 5;
+	y = 2;
+	i = 0;
+	while(!StrEq(head[i],"")){
+		gotoxy(x,y+i);
+		printf("%s",head[i]);
 		i++;
 	}
 }
