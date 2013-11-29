@@ -27,11 +27,15 @@
 /* Nilai Takterdefinisi */
 #define Absent 'A' /* Nilai ini digunakan untuk mendefinisikan indeks yang empty*/
 
+/* Index tak terdefinisi */
+#define IdxUndef -1;
+
 /* ---- Tipe Bentukan ----- */
 typedef int index; /* jika sudah ada di adt data, hapus aja */
 typedef struct {
 	String Name;
-	Kartu OnHand[MaxKartu];
+	Kartu OnHand[MaxKartu+1];
+	int NKartu;
 	int Score;
 	char Character;
 	char Condition;
@@ -51,6 +55,8 @@ char ConditionofPlayer(ArrayofPlayer T, index i);
 /*	Mengambil kondisi player ke-index dari tabel */
 int ScorePlayer(ArrayofPlayer T, index i);
 /*	Mengambil score player ke-index dari tabel */
+index GetPlayerIdx (ArrayofPlayer T,String Nama);
+
 Kartu KartuonIndex(ArrayofPlayer T, index user, index Kartu);
 /*	Mengambil Kartu player ke-index dari tabel */
 
@@ -72,7 +78,7 @@ boolean IsFullofArrayPlayer (ArrayofPlayer T);
 /*	Mengembalikan nilai true apabila NbPlayer mencapai maksimum */
 boolean IsLessMinofArrayPlayer (ArrayofPlayer T);
 /*	Mengembalikan nilai true apabila NbPlayer tidak mencapai minimum */
-boolean IsMemberofKartuonHand (ArrayofPlayer T, index i, Kartu ID);
+boolean IsMemberofKartuonHand (ArrayofPlayer T, index i, String Nama);
 /*	Mengecek apakah ada kartu
 
 /*	----- Pengolahan Elemen Array ----- */
@@ -95,11 +101,11 @@ void UpdateCharacterofPlayer (ArrayofPlayer *T, index i, char Character);
 /*	I.S.	: T terdefinisi tidak kosong, game tahap inisialisasi
 	F.S.	: Character dari player yang berada di indeks ke-i terupdate
 	Proses	: Mengisi Character di array sesuai dengan input */
-void FillKartuonPlayer (ArrayofPlayer *T, index i, Kartu ID);
+void FillKartuonPlayer (ArrayofPlayer *T, index i, Kartu C);
 /* 	I.S.	: T terdefinisi tidak kosong, game tahap bermain (turn)
 	F.S.	: Kartu tangan player indeks ke-i terupdate
 	Proses	: Dummy pada kartu tangan diganti dengan input */
-void TakeKartufromPlayer (ArrayofPlayer *T, index i, Kartu ID);
+boolean TakeKartufromPlayer (ArrayofPlayer *T, index i,String Nama, Kartu *C);
 /*	I.S.	: T terdefinisi tidak kosong, game tahap bermain (turn)
 	F.S.	: Kartu tangan player indeks ke-i terupdate tanpa ID
 	Proses	: ID di kartu tangan diganti dengan Dummy */
@@ -115,5 +121,7 @@ int NbGoldMiner (ArrayofPlayer T);
 /*	----- Penghitungan Kartu ----- */
 int KartuOnHand (ArrayofPlayer T, index user);
 /*	Menghitung jumlah kartu yang ada di tangan */
+
+int TotalKartuPlayer (ArrayofPlayer T);
 
 #endif

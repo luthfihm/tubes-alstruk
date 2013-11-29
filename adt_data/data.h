@@ -70,6 +70,8 @@ void editData(tabData *T, String nama, int newScore, time_t newTime);
 
 void PrintPengguna(tabData T);
 
+void PrintHighScore(tabData T);
+
 //Procedure Sort
 void sortScoreDesc(tabData *T);
 /* I.S.	:Tab T terdefinisi

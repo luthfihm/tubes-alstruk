@@ -1,15 +1,19 @@
 #include "../boolean.h"
 #include <stdio.h>
 #include <time.h>
+#include "../mystring/mystring.h"
 
 // Bentuk susunan kartu dalam bentuk implementasi Deck
 
 #define Nil 0
 #define MaxEl 68
+#define MaxChar 10
+#define MaxGold 28
 #define TOP(S) (S).TOP
 #define Jenis(K) (K).Jenis
 #define ID(K) (K).ID
 #define Guna(K) (K).Guna
+#define NKartu(D) (D).NKartu
 
 typedef struct {
 	int ID;
@@ -25,6 +29,18 @@ typedef struct {
 	infotype T[MaxEl+1];
 	address TOP;
 	} Deck;
+	
+typedef struct {
+	infotype T[MaxChar+1];
+	address TOP;
+	} DeckChar;
+	
+typedef struct {
+	infotype T[MaxGold+1];
+	address TOP;
+	} DeckGold;
+	
+
 /* Definisi Deck S kosong : S.TOP = Nil */
 /* Elemen yang dipakai menyimpan nilai Deck T[1]..T[MaxEl] */
 /* Jika S adalah Deck maka akses elemen : */
@@ -68,4 +84,28 @@ void ShuffleDeck (Deck *D);
 void TukarKartu(Deck *D, int i, int j);
 //Menukar dua buah kartu yang urutannya ke-i dan ke-j	
 
+void DefaultChar(DeckChar *D, int NPemain);
+//Menyiapkan deck untuk pembagian character masing-masing pemain
+//Sudah Langsung DiShuffle
 
+void DrawChar(DeckChar *D, Kartu *K);
+//Memilihkan peran untuk pemain dengan cara men-draw kartu
+
+void DefaultChar(DeckChar *D, int NPemain);
+//Menyiapkan deck untuk pembagian character masing-masing pemain
+//Sudah Langsung DiShuffle
+
+void DrawChar(DeckChar *D, Kartu *K);
+//Memilihkan peran untuk pemain dengan cara men-draw kartu
+
+void DefaultGold (DeckGold *D);
+//Menyiapkan untuk pembagian gold nugget kepada para pemenang.
+
+void DrawGold (DeckGold *D, Kartu *K1, Kartu *K2);
+//Memberikan gold nugget kepada para pemenang
+
+void NamaKartu(Kartu K,String Nama);
+//Menampilkan kartu di tangan user
+
+void GambarKartu(Kartu K,int x,int y);
+//Menampilkan ilustrasi kartu yang ada di tangan.
