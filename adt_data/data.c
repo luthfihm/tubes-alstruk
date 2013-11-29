@@ -175,6 +175,38 @@ void PrintPengguna(tabData T)
 	}
 }
 
+void PrintHighScore(tabData T)
+{
+	/* I.S.	:T terdefinisi
+	 * F.S.	:Pengguna tercetak di layar
+	 */
+	
+	//Kamus
+	int i,x,y;
+	String waktu;
+	
+	//Program
+	sortScoreDesc(&T);
+	i = 1;
+	x = 20;
+	y = 10;
+	gotoxy(x,y);
+	printf("Rank");
+	gotoxy(x+8,y);
+	printf("Name");
+	gotoxy(x+35,y);
+	printf("Score");
+	while (i <= T.jumlahPemain){
+		gotoxy(x,y+i);
+		printf("%d.",i);
+		gotoxy(x+8,y+i);
+		printf("%s", T.TI[i].nama);
+		gotoxy(x+37,y+i);
+		printf("%3d",T.TI[i].score);\
+		i++;
+	}
+}
+
 //Procedure Sort
 void sortScoreDesc(tabData *T)
 /* I.S.	:Tab T terdefinisi

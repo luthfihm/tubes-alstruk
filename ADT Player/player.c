@@ -233,3 +233,19 @@ int KartuOnHand (ArrayofPlayer T, index user) {
 	}
 	return jumlah;
 }
+
+int TotalKartuPlayer (ArrayofPlayer T)
+
+{
+	/* Kamus Lokal */
+	int N;
+	index i;
+	/* Algoritma */
+	i = 0;
+	N = 0;
+	while (i < NbPlayer(T)){
+		N += T.Player[i].NKartu;
+		i++;
+	}
+	return N;
+}

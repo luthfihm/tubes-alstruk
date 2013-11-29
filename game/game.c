@@ -30,6 +30,9 @@ void StartGame(ArrayofPlayer *T)
 		id = i % NbPlayer(*T);
 		Player = NamePlayer(*T,id);
 		ShowKartuPlayer ((*T).Player[id]);
+		if (IsEmpty(D)){
+			Sudah_Ambil = true;
+		}
 		if (alert){
 			gotoxy(5,35);
 			printf("%s",pesan);
@@ -292,6 +295,9 @@ void StartGame(ArrayofPlayer *T)
 			alert = true;
 			EmptyStr(pesan);
 			CopyStr("Perintah tidak valid",pesan);
+		}
+		if (TotalKartuPlayer(*T) == 0){
+			Board_Win = -1;
 		}
 	} while ((!End)&&(!Board_Win));
 	if (Board_Win != 0){

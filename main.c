@@ -14,11 +14,12 @@ int main(){
 	tabData Data;
 	ArrayofPlayer TP;
 	int i,jml_pemain;
-	boolean alert,v_pengguna,ready,valid;
+	boolean alert,v_pengguna,ready,valid,v_score;
 	char c;
 	/* Algoritma */
 	alert = false;
 	v_pengguna = false;
+	v_score = false;
 	loadData(&Data);
 	do {
 		clrscr();
@@ -33,6 +34,9 @@ int main(){
 			PrintPengguna(Data);
 			v_pengguna = false;
 		}
+		if (v_score){
+			PrintHighScore(Data);
+		}
 		gotoxy(5,34);
 		printf("> ");
 		i = 0;
@@ -42,7 +46,7 @@ int main(){
 			scanf("%c",&c);
 		} while(c == ' ');
 		if (StrEq(opt,"highscore")){
-
+			v_score = true;
 		}else if (StrEq(opt,"viewplayers")){
 			v_pengguna = true;
 		}else if (StrEq(opt,"add")){

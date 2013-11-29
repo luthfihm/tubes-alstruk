@@ -122,4 +122,6 @@ int NbGoldMiner (ArrayofPlayer T);
 int KartuOnHand (ArrayofPlayer T, index user);
 /*	Menghitung jumlah kartu yang ada di tangan */
 
+int TotalKartuPlayer (ArrayofPlayer T);
+
 #endif
