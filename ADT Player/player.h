@@ -17,7 +17,7 @@
 #define Disabled 'D'
 
 /* -- Jumlah Maksimum -- */
-#define MaxKartu 5
+#define MaxKartu 6
 #define MaxPlayer 10
 
 /* --- Jumlah minimum -- */

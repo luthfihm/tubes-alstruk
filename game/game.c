@@ -30,6 +30,7 @@ void StartGame(ArrayofPlayer *T)
 		id = i % NbPlayer(*T);
 		Player = NamePlayer(*T,id);
 		ShowKartuPlayer ((*T).Player[id]);
+		ShowPlayerList(*T);
 		if (IsEmpty(D)){
 			Sudah_Ambil = true;
 		}
@@ -37,6 +38,22 @@ void StartGame(ArrayofPlayer *T)
 			gotoxy(5,35);
 			printf("%s",pesan);
 			alert = false;
+		}
+		x = 114;
+		y = 1;
+		for (j=0;j<27;j++){
+			gotoxy(x+j,y);
+			printf("=");
+			gotoxy(x+j,y+3);
+			printf("_");
+			gotoxy(x+j,y+35);
+			printf("=");
+		}
+		x = 139;
+		y = 2;
+		for (j=0;j<34;j++){
+			gotoxy(x,y+j);
+			printf("||");
 		}
 		gotoxy(5,34);
 		printf("%s >> ",Player.Name);
@@ -258,10 +275,6 @@ void StartGame(ArrayofPlayer *T)
 				alert = true;
 				EmptyStr(pesan);
 				CopyStr("Anda sudah mengambil kartu",pesan);
-			}else if(!Keluar_Kartu){
-				alert = true;
-				EmptyStr(pesan);
-				CopyStr("Anda belum mengeluarkan kartu",pesan);
 			}else{
 				Draw(&D,&C);
 				FillKartuonPlayer(T,id,C);
@@ -414,7 +427,7 @@ void ShowKartuPlayer (Dataplayer P)
 	String Nama;
 	i = 0;
 	x = 86;
-	y = 3;
+	y = 4;
 	while (i < P.NKartu){
 		if ((i % 2) == 1){
 			GambarKartu(P.OnHand[i],x+12,y);
@@ -500,6 +513,31 @@ void ScoreBoard (ArrayofPlayer T,char Winner)
 			printf("=> Saboteur ; Score = %d",ScorePlayer(T,i));
 		}else if (CharacterofPlayer(T,i)==GoldMiner){
 			printf("=> GoldMiner ; Score = %d",ScorePlayer(T,i));
+		}
+		i++;
+	}
+}
+
+void ShowPlayerList (ArrayofPlayer T)
+
+{
+	/* Kamus */
+	index i;
+	int x,y;
+	/* Algoritma */
+	gotoxy(118,3);
+	printf("# Daftar Pemain #");
+	i = 0;
+	x = 115;
+	y = 6;
+	while (i < NbPlayer(T)){
+		gotoxy(x,y+(3*i));
+		printf("# %s",T.Player[i].Name);
+		gotoxy(x+2,y+1+(3*i));
+		if (ConditionofPlayer(T,i) == Enabled){
+			printf("Status : Enabled");
+		}else if (ConditionofPlayer(T,i) == Disabled){
+			printf("Status : Disabled");
 		}
 		i++;
 	}

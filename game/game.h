@@ -17,4 +17,6 @@ void ShowKartuPlayer (Dataplayer P);
 
 void ScoreBoard (ArrayofPlayer T,char Winner);
 
+void ShowPlayerList (ArrayofPlayer T);
+
 #endif
