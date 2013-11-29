@@ -1,0 +1,34 @@
+Help:
+putonboard <id-card> <koordinat y> <koordinat x> <posisi>
+Menaruh kartu ke papan
+<id-card> Id kartu yang akan ditaruh ke papan.
+<koordinat y> posisi baris tempat kartu ditempatkan
+<koordinat x>  posisi kolom tempat kartu ditempatkan
+<posisi> 0:Kartu diletakkan apa adanya
+	 180:Kartu diputar 180 derajat sebelum diletakkan
+
+viewmap <koordinat-goalcard-y> <koordinat-goalcard-y>
+Untuk mengetahui apakah goalcard tersebut adalah batu atau emas. Hanya dapat dijalankan jika player mempunyai kartu viewmap.
+<koordinat-goalcard-y> posisi baris goalcard yang akan dilihat
+<koordinat-goalcard-x> posisi kolom goalcard yang akan dilihat
+
+discard <id-card>
+Perintah ini digunakan untuk membuang kartu dari tangan ke discardpile
+<id-card> ID kartu yang ingin dibuang
+
+putonplayer <id-card> <nama-player-target>
+Menaruh action card repairtool / breaktool ke player
+<id-card> Id kartu yang akan diberikan ke pemain
+<nama-player-target> Nama player yang akan diberikan action card. Jika ingin memberikan action card kepada diri sendiri dapat diisi dengan me. Jika nama player mengandung spasi apitlah dengan tanda kutip. Misal: "Nama Pemain"
+
+draw
+Untuk mengambil kartu dari deck ke tangan
+
+viewchar
+Untuk melihat role pemain, apakah anda menjadi Gold Miner atau saboteur
+
+finish
+Untuk mengakhiri turn.
+
+cancel
+untuk keluar dari game
