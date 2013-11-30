@@ -95,25 +95,37 @@ void header()
 	printf("=============================================================================================================");
 }
 
-void BacaNama(String Nama)
+void Menu()
+
 {
-	/* Kamus Lokal */
-	char c;
-	int i;
-	String input;
-	boolean done;
-	/* Algoritma */
+	char *M[] = {
+		" __  __                  ",
+		"|  \\/  | ___ _ __  _   _ ",
+		"| |\\/| |/ _ \\ '_ \\| | | |",
+		"| |  | |  __/ | | | |_| |",
+		"|_|  |_|\\___|_| |_|\\__,_|",
+		""
+	};
+	int i,x,y;
+	x = 84;
+	y = 9;
 	i = 0;
-	done = false;
-	EmptyStr(input);
-	do {
-		c = getchar();
-		if ((c != '"')&&(c != '\n' )){
-			input[i] = c;
-			i++;
-		}
-	} while ((c != '"')&&(c != '\n' ));
-	//if (done){
-		CopyStr(input,Nama);
-	//}
+	while(!StrEq(M[i],"")){
+		gotoxy(x,y+i);
+		printf("%s",M[i]);
+		i++;
+	}
+	x = 82;
+	y = 15;
+	for (i=0;i<30;i++){
+		gotoxy(x+i,y);
+		printf("=");
+	}
+}
+
+void GambarHome()
+
+{
+	
+
 }

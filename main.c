@@ -13,7 +13,7 @@ int main(){
 	String opt,nama,pesan,player[10];
 	tabData Data;
 	ArrayofPlayer TP;
-	int i,jml_pemain;
+	int i,jml_pemain,x,y;
 	boolean alert,v_pengguna,ready,valid,v_score;
 	char c;
 	/* Algoritma */
@@ -25,6 +25,14 @@ int main(){
 		clrscr();
 		canvas();
 		header();
+		Menu();
+		GambarHome();
+		x = 80;
+		y = 9;
+		for (i=0;i<24;i++){
+			gotoxy(x,y+i);
+			printf("||");
+		}
 		if (alert){
 			gotoxy(5,35);
 			printf("%s\n",pesan);
@@ -36,6 +44,7 @@ int main(){
 		}
 		if (v_score){
 			PrintHighScore(Data);
+			v_score = false;
 		}
 		gotoxy(5,34);
 		printf("> ");
@@ -152,10 +161,12 @@ int main(){
 		}else if (StrEq(opt,"start")){
 			if (ready){
 				StartGame(&TP);
-				i = 0;
-				while (i < NbPlayer(TP)){
-					editData(&Data,TP.Player[i].Name,ScorePlayer(TP,i),time(NULL));
-					i++;
+				if (Board_Win != 0){
+					i = 0;
+					while (i < NbPlayer(TP)){
+						editData(&Data,TP.Player[i].Name,ScorePlayer(TP,i),time(NULL));
+						i++;
+					}
 				}
 				saveData(Data);
 				MakeEmptyAP(&TP);

@@ -23,4 +23,6 @@ void GameHelp ();
 
 void HelpHeader ();
 
+void DrawPile (boolean Stat);
+
 #endif

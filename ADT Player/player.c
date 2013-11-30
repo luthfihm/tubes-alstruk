@@ -87,7 +87,7 @@ boolean IsMemberofArrayPlayer (ArrayofPlayer T, String Name) {
 	/*	Algoritma */
 	i = 0;
 	Found = false;
-	while ((i < MaxPlayer) && (!Found)) {
+	while ((i < NbPlayer(T)) && (!Found)) {
 		if (StrEq(T.Player[i].Name,Name)) {
 			Found = true;
 		}
@@ -136,6 +136,7 @@ void InsertPlayer (ArrayofPlayer *T, String Name) {
 		CopyStr(Name,(*T).Player[i].Name);
 		UpdateConditiononPlayer(T,i,Enabled);
 		UpdateScoreonPlayer(T,i,0);
+		(*T).Player[i].NKartu = 0;
 		NbPlayer(*T)++;
 		
 	}

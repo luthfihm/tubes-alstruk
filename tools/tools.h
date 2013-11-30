@@ -23,6 +23,8 @@ void canvas();
 
 void header();
 
-void BacaNama(String Nama);
+void Menu();
+
+void GambarHome();
 
 #endif

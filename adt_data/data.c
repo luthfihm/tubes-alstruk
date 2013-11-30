@@ -151,7 +151,7 @@ void PrintPengguna(tabData T)
 	
 	//Program
 	i = 1;
-	x = 20;
+	x = 12;
 	y = 10;
 	gotoxy(x,y);
 	printf("Rank");
@@ -188,7 +188,7 @@ void PrintHighScore(tabData T)
 	//Program
 	sortScoreDesc(&T);
 	i = 1;
-	x = 20;
+	x = 15;
 	y = 10;
 	gotoxy(x,y);
 	printf("Rank");

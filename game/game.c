@@ -37,6 +37,7 @@ void StartGame(ArrayofPlayer *T)
 		id = i % NbPlayer(*T);
 		Player = NamePlayer(*T,id);
 		ShowKartuPlayer ((*T).Player[id]);
+		DrawPile(!IsEmpty(D));
 		ShowPlayerList(*T);
 		if (IsEmpty(D)){
 			Sudah_Ambil = true;
@@ -178,7 +179,7 @@ void StartGame(ArrayofPlayer *T)
 								}else{
 									alert = true;
 									EmptyStr(pesan);
-									CopyStr("Break tool tidak bisa. Target sudah dalam kondisi Disabled",pesan);
+									CopyStr("Break tool tidak bisa. Anda sedang dalam kondisi Disabled",pesan);
 									FillKartuonPlayer(T,id,C);
 								}
 							}else if (IsMemberofArrayPlayer(*T,nama)){
@@ -192,7 +193,7 @@ void StartGame(ArrayofPlayer *T)
 								}else{
 									alert = true;
 									EmptyStr(pesan);
-									CopyStr("Break tool tidak bisa. Target sudah dalam kondisi Disabled",pesan);
+									CopyStr("Break tool tidak bisa. Target sedang dalam kondisi Disabled",pesan);
 									FillKartuonPlayer(T,id,C);
 								}
 							}else{
@@ -215,7 +216,7 @@ void StartGame(ArrayofPlayer *T)
 								}else{
 									alert = true;
 									EmptyStr(pesan);
-									CopyStr("Break tool tidak bisa. Target sudah dalam kondisi Enabled",pesan);
+									CopyStr("Repair tool tidak bisa. Anda sedang dalam kondisi Enabled",pesan);
 									FillKartuonPlayer(T,id,C);
 								}
 							}else if (IsMemberofArrayPlayer(*T,nama)){
@@ -229,7 +230,7 @@ void StartGame(ArrayofPlayer *T)
 								}else{
 									alert = true;
 									EmptyStr(pesan);
-									CopyStr("Break tool tidak bisa. Target sudah dalam kondisi Enabled",pesan);
+									CopyStr("Repair tool tidak bisa. Target sedang dalam kondisi Enabled",pesan);
 									FillKartuonPlayer(T,id,C);
 								}
 							}else{
@@ -323,17 +324,9 @@ void StartGame(ArrayofPlayer *T)
 		}
 	} while ((!End)&&(!Board_Win));
 	if (Board_Win != 0){
-		do {
-			clrscr();
-			canvas();
-			Board_Print();
-			gotoxy(5,34);
-			if (Board_Win == -1){
-				printf("'Saboteur' WIN!!! Press enter to continue... ");
-			}else if(Board_Win == 1){
-				printf("'GoldMiner' WIN!!! Press enter to continue... ");
-			}
-		} while (getchar() != '\n');
+		while (getchar() != '\n'){
+
+		}
 		do {
 			clrscr();
 			canvas();
@@ -442,14 +435,14 @@ void ShowKartuPlayer (Dataplayer P)
 			GambarKartu(P.OnHand[i],x+12,y);
 			EmptyStr(Nama);
 			NamaKartu(P.OnHand[i],Nama);
-			gotoxy(x+12,y+6);
+			gotoxy(x+13,y+6);
 			printf("%s\n",Nama);
 		}else{
 			y += 7;
 			GambarKartu(P.OnHand[i],x,y);
 			EmptyStr(Nama);
 			NamaKartu(P.OnHand[i],Nama);
-			gotoxy(x,y+6);
+			gotoxy(x+1,y+6);
 			printf("%s\n",Nama);
 		}
 		i++;
@@ -564,41 +557,41 @@ void GameHelp ()
 		""
 	};
 	char *help[] = {
-		"putonboard <id-card> <koordinat y> <koordinat x> <posisi>",
-		"Menaruh kartu ke papan",
-		"<id-card> Id kartu yang akan ditaruh ke papan.",
-		"<koordinat y> posisi baris tempat kartu ditempatkan",
-		"<koordinat x>  posisi kolom tempat kartu ditempatkan",
-		"<posisi> 0:Kartu diletakkan apa adanya ; 180:Kartu diputar 180 derajat sebelum diletakkan",
+		"# putonboard <id-card> <koordinat y> <koordinat x> <posisi>",
+		"  Menaruh kartu ke papan",
+		"  <id-card> Id kartu yang akan ditaruh ke papan.",
+		"  <koordinat y> posisi baris tempat kartu ditempatkan",
+		"  <koordinat x>  posisi kolom tempat kartu ditempatkan",
+		"  <posisi> 0:Kartu diletakkan apa adanya ; 180:Kartu diputar 180 derajat sebelum diletakkan",
 		" ",
-		"viewmap <koordinat-goalcard-y> <koordinat-goalcard-y>",
-		"Untuk mengetahui apakah goalcard tersebut adalah batu atau emas.",
-		"Hanya dapat dijalankan jika player mempunyai kartu viewmap.",
-		"<koordinat-goalcard-y> posisi baris goalcard yang akan dilihat",
-		"<koordinat-goalcard-x> posisi kolom goalcard yang akan dilihat",
+		"# viewmap <koordinat-goalcard-y> <koordinat-goalcard-y>",
+		"  Untuk mengetahui apakah goalcard tersebut adalah batu atau emas.",
+		"  Hanya dapat dijalankan jika player mempunyai kartu viewmap.",
+		"  <koordinat-goalcard-y> posisi baris goalcard yang akan dilihat",
+		"  <koordinat-goalcard-x> posisi kolom goalcard yang akan dilihat",
 		" ",
-		"discard <id-card>",
-		"Perintah ini digunakan untuk membuang kartu dari tangan ke discardpile",
-		"<id-card> ID kartu yang ingin dibuang",
+		"# discard <id-card>",
+		"  Perintah ini digunakan untuk membuang kartu dari tangan ke discardpile",
+		"  <id-card> ID kartu yang ingin dibuang",
 		" ",
-		"putonplayer <id-card> <nama-player-target>",
-		"Menaruh action card repairtool / breaktool ke player",
-		"<id-card> Id kartu yang akan diberikan ke pemain",
-		"<nama-player-target> Nama player yang akan diberikan action card.",
-		"Jika ingin memberikan action card kepada diri sendiri dapat diisi dengan \"me\".",
-		"Jika nama player mengandung spasi apitlah dengan tanda kutip. Misal: \"Nama Pemain\"",
+		"# putonplayer <id-card> <nama-player-target>",
+		"  Menaruh action card repairtool / breaktool ke player",
+		"  <id-card> Id kartu yang akan diberikan ke pemain",
+		"  <nama-player-target> Nama player yang akan diberikan action card.",
+		"  Jika ingin memberikan action card kepada diri sendiri dapat diisi dengan \"me\".",
+		"  Jika nama player mengandung spasi apitlah dengan tanda kutip. Misal: \"Nama Pemain\"",
 		" ",
-		"draw",
-		"Untuk mengambil kartu dari deck ke tangan",
+		"# draw",
+		"  Untuk mengambil kartu dari deck ke tangan",
 		" ",
-		"viewchar",
-		"Untuk melihat role pemain, apakah anda menjadi Gold Miner atau saboteur",
+		"# viewchar",
+		"  Untuk melihat role pemain, apakah anda menjadi Gold Miner atau saboteur",
 		" ",
-		"finish",
-		"Untuk mengakhiri turn.",
+		"# finish",
+		"  Untuk mengakhiri turn.",
 		" ",
-		"cancel",
-		"untuk keluar dari game",
+		"# cancel",
+		"  untuk keluar dari game",
 		""
 	};
 	int x,y,i;
@@ -611,7 +604,7 @@ void GameHelp ()
 		i = 0;
 		HelpHeader();
 		while (!StrEq(help[i],"")){
-			if (StrEq(help[i],"draw")){
+			if (StrEq(help[i],"# draw")){
 				y -= 24;
 				gotoxy(5,34);
 				printf("Press enter to next page... ");
@@ -650,5 +643,49 @@ void HelpHeader ()
 		gotoxy(x,y+i);
 		printf("%s",head[i]);
 		i++;
+	}
+}
+
+void DrawPile (boolean Stat)
+
+{
+	char *blank[] = {
+		" ___________ ",
+		"|           |",
+		"|           |",
+		"|   Draw    |",
+		"|   Pile    |",
+		"|   Habis   |",
+		"|           |",
+		"|___________|",
+		""
+	};
+	char *card[] = {
+		" _______ ",
+		"|       |",
+		"|_Draw _|",
+		"|-|_|_|-|",
+		"|  Pile |", 
+		"|_______|",
+		""
+	};
+	int x,y,i;
+	x = 90;
+	y = 2;
+	i = 0;
+	while(!StrEq(blank[i],"")){
+		gotoxy(x,y+i);
+		printf("%s",blank[i]);
+		i++;
+	}
+	if (Stat){
+		x += 2;
+		y += 1;
+		i = 0;
+		while(!StrEq(card[i],"")){
+			gotoxy(x,y+i);
+			printf("%s",card[i]);
+			i++;
+		}
 	}
 }
