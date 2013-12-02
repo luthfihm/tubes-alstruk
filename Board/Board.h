@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * */
-/* ADT Board v1.1 			 					 */
+/* ADT Board v1.5 			 					 */
 /* By Muntaha Ilmi 13512048  					 */
 /* Header 					 					 */
 /* Mengatur Board. Melingkupi pencetakan Board,  */
@@ -8,8 +8,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * */
 #ifndef BOARD_H
 #define BOARD_H
-
-#include "../boolean.h"
 
 int Board_Card_Open[10][15]; /* Kode isi dari kartu yang ditaruh */
 int Board_Card_Around[10][15]; /* kartu sebelah kosong/tdk */
@@ -42,22 +40,52 @@ void Board_Init(int PosX,int PosY);
 	/* Inisialisasi Board */
 	/* PosX dan PosY untuk posisi kiri atas Board */
 
+int Board_CekPut(int PosY, int PosX, int Stat);
+	/* Mengecek apakah kartu bisa ditaruh pada posisi tertentu */
+	/* Kode output :
+		1 = bisa ditaruh
+		0 = Posisi di luar Board
+		-1 = Posisi sudah ada kartu
+		-2 = Tidak terhubung dengan Startcard
+		-3 = Bentuk salah */
+
+int Board_CekRock(int PosY, int PosX);
+	/* Mengecek apakah Rockfall bisa dilakukan pada posisi tertentu */
+	/* Rockfall tidak bisa dilakukan pada kartu Start, Goalcard, dan tempat kosong */
+	/* Kode output :
+		1 = bisa di-rockfall
+		0 = Posisi di luar Board
+		-1 = Posisi rockfall adalah Startcard
+		-2 = Posisi rockfall adalah Goalcard
+		-3 = Tidak ada kartu di posisi tertentu */
+
 void Board_Print(void);
 	/* Cetak Board. Ukuran 5x9 kartu. Mencetak bantuan posisi juga. */
 
-void Board_PrintCard(int Stat, int PosY, int PosX);
+void Board_PrintCard(int PosY, int PosX, int Stat);
 	/* Cetak satu kartu, sesuai kode Stat. Lihat penjelasan diatas untuk kode Stat. */
 	/* PosX dan PosY untuk posisi kartu di Board (5x9) */
 
-int Board_Refresh(int PosY, int PosX);
-	/* Fungsi rekursif untuk mengecek kartu mana saja yang 
-	   terhubung langsung (satu komponen) dengan kartu start */
-	/* Memakai algoritma flood fill. Flag-nya Card_Able */
-	/* Untuk mengantisipasi Rockfall, sebelum dipanggil, 
-	   Card_Able, Card_Around, dan Card_Flag dikosongkan dulu. */
+int Board_CekGoal(void);
+	/* Mengecek apakah deadlock karena Goalcard tidak bisa dicapai 
+	   lagi sudah terjadi/belum */
+	/* Tidak mengecek apakah kartu Rockfall sudah habis/belum */
+	/*	1 = Deadlock terjadi
+		0 = Belum Deadlock */
 
-boolean Board_PutCard(int PosY, int PosX, int Stat);
+int Board_Refresh(void);
+	/* Mengecek kartu mana saja yang terhubung langsung (satu komponen)
+	   dengan kartu start */
+	/* Memakai algoritma flood fill. */
+
+void Board_Reload(void);
+	/* Mengatur ulang keadaan Board setelah load game */
+	/* Board_Card_Open harus sudah terisi dengan benar (sudah di-load ulang) */
+
+void Board_PutCard(int PosY, int PosX, int Stat);
 	/* Menaruh kartu di Board. Stat berisi kode kartu yang akan ditaruh */
+	/* Tidak mengecek PosY, PosX, dan Stat */
+	/* Parameter harus memenuhi Board_CekPut dahulu agar tidak error */
 
 int Board_Viewmap(int pos);
 	/* Mengirimkan kode isi kartu Goalcard. Memakai rumus */
@@ -68,4 +96,10 @@ int Board_Viewmap(int pos);
 	/* Penjelasan output :
 		0 = Yang dilihat kartu Gold
 		1 = Yang dilihat kartu Batu */
+
+void Board_Rockfall(int PosY, int PosX);
+	/* Menghancurkan satu kartu di Board, lalu mengatur ulang status Board */
+	/* Tidak mengecek PosY dan PosX */
+	/* Parameter harus memenuhi Board_CekRock dahulu agar tidak error */
+
 #endif

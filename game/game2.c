@@ -9,7 +9,7 @@ void StartGame(ArrayofPlayer *T)
 	Dataplayer Player;
 	Deck D;
 	Kartu C;
-	int i,j,id,x,y,stat,g,ids,tmp;
+	int i,j,id,x,y,stat,g,ids;
 	boolean End,alert,Sudah_Ambil,Keluar_Kartu,help;
 	i = 0;
 	AcakKarakterPlayer(T);
@@ -94,25 +94,13 @@ void StartGame(ArrayofPlayer *T)
 						}else{
 							g = C.Guna;
 						}
-						tmp=Board_CekPut(x-1,y-1,g);
-						if (tmp>0){
-							Board_PutCard(x-1,y-1,g);
+						if (Board_PutCard(x-1,y-1,g)){
 							Keluar_Kartu = true;
 						}else{
 							FillKartuonPlayer(T,id,C);
 							alert = true;
 							EmptyStr(pesan);
-							switch(tmp){
-								case 0: CopyStr("Koordinat di luar papan permainan",pesan);
-										break;
-								case -1:CopyStr("Posisi target sudah ada kartu lain",pesan);
-										break;
-								case -2:CopyStr("Kartu tidak terhubung dengan kartu Start",pesan);
-										break;
-								case -3:CopyStr("Bentuk kartu salah",pesan);
-										break;
-							}
-							//CopyStr("Posisi atau kartu path tidak valid",pesan);
+							CopyStr("Posisi atau kartu path tidak valid",pesan);
 						}
 					}else{
 						FillKartuonPlayer(T,id,C);
@@ -134,7 +122,7 @@ void StartGame(ArrayofPlayer *T)
 				CopyStr("Anda sudah mengeluarkan kartu",pesan);
 			}else if (TakeKartufromPlayer(T,id,"Action 3",&C)){
 				if ((y == 1)&&((x == 1)||(x == 3)||(x == 5))){
-					stat = Board_Viewmap((x-1)/2);
+					stat = Board_Viewmap(x/2);
 					if (stat == 0){
 						alert = true;
 						CopyStr("Kartu berisi 'Gold'",pesan);
@@ -146,44 +134,12 @@ void StartGame(ArrayofPlayer *T)
 				}else{
 					FillKartuonPlayer(T,id,C);
 					alert = true;
-					CopyStr("Koordinat tidak pada Goalcard",pesan);
+					CopyStr("Koordinat tidak valid",pesan);
 				}
 			}else{
 				alert = true;
 				EmptyStr(pesan);
 				CopyStr("Anda tidak mempunyai Kartu View Map",pesan);
-			}
-		}else if (StrEq(opt,"rockfall")){
-			scanf("%d %d",&x,&y);
-			if (Keluar_Kartu){
-				alert = true;
-				EmptyStr(pesan);
-				CopyStr("Anda sudah mengeluarkan kartu",pesan);
-			}else if (TakeKartufromPlayer(T,id,"Action 4",&C)){
-				tmp=Board_CekRock(x-1,y-1);
-				if (tmp>0){
-					Board_Rockfall(x-1,y-1);
-					Keluar_Kartu = true;
-				}else{
-					FillKartuonPlayer(T,id,C);
-					alert = true;
-					EmptyStr(pesan);
-					switch(tmp){
-						case 0: CopyStr("Koordinat di luar papan permainan",pesan);
-								break;
-						case -1:CopyStr("Startcard tidak bisa di Rockfall",pesan);
-								break;
-						case -2:CopyStr("Goalcard tidak bisa di Rockfall",pesan);
-								break;
-						case -3:CopyStr("Tidak bisa melakukan Rockfall pada kartu kosong",pesan);
-								break;
-					}
-					//CopyStr("Posisi atau kartu path tidak valid",pesan);
-				}
-			}else{
-				alert = true;
-				EmptyStr(pesan);
-				CopyStr("Anda tidak mempunyai Kartu Rockfall",pesan);
 			}
 		}else if (StrEq(opt,"putonplayer")){
 			do {
