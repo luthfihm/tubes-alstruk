@@ -79,7 +79,7 @@ boolean IsFullofArrayPlayer (ArrayofPlayer T);
 boolean IsLessMinofArrayPlayer (ArrayofPlayer T);
 /*	Mengembalikan nilai true apabila NbPlayer tidak mencapai minimum */
 boolean IsMemberofKartuonHand (ArrayofPlayer T, index i, String Nama);
-/*	Mengecek apakah ada kartu
+/*	Mengecek apakah ada kartu di tangan pemain */
 
 /*	----- Pengolahan Elemen Array ----- */
 void InsertPlayer (ArrayofPlayer *T, String Name);
@@ -105,7 +105,7 @@ void FillKartuonPlayer (ArrayofPlayer *T, index i, Kartu C);
 /* 	I.S.	: T terdefinisi tidak kosong, game tahap bermain (turn)
 	F.S.	: Kartu tangan player indeks ke-i terupdate
 	Proses	: Dummy pada kartu tangan diganti dengan input */
-boolean TakeKartufromPlayer (ArrayofPlayer *T, index i,String Nama, Kartu *C);
+boolean TakeKartufromPlayer (ArrayofPlayer *T, index i,String Card, Kartu *C);
 /*	I.S.	: T terdefinisi tidak kosong, game tahap bermain (turn)
 	F.S.	: Kartu tangan player indeks ke-i terupdate tanpa ID
 	Proses	: ID di kartu tangan diganti dengan Dummy */
@@ -120,8 +120,9 @@ int NbGoldMiner (ArrayofPlayer T);
 
 /*	----- Penghitungan Kartu ----- */
 int KartuOnHand (ArrayofPlayer T, index user);
-/*	Menghitung jumlah kartu yang ada di tangan */
+/*	Menghitung jumlah kartu yang ada di tangan satu player */
 
 int TotalKartuPlayer (ArrayofPlayer T);
+/*	Menghitung jumlah kartu yang ada di tangan seluruh player */
 
 #endif
