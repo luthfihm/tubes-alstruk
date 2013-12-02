@@ -6,7 +6,7 @@
 // Bentuk susunan kartu dalam bentuk implementasi Deck
 
 #define Nil 0
-#define MaxEl 68
+#define MaxEl 70
 #define MaxChar 10
 #define TOP(S) (S).TOP
 #define Jenis(K) (K).Jenis
@@ -178,6 +178,11 @@ void DefaultDeck (Deck *D){
 			Jenis((*D).T[i])='A';
 			ID((*D).T[i])=19;
 			Guna((*D).T[i])=31; //ViewMap
+	}
+	for(i=69;i<=70;i++){
+			Jenis((*D).T[i])='A';
+			ID((*D).T[i])=25;
+			Guna((*D).T[i])=41; //RockFall
 	}
 	
 }
@@ -376,6 +381,9 @@ void NamaKartu(Kartu K,String Nama){
 		break;
 		case 24 :
 		CopyStr("Gold 3",Nama);
+		break;
+		case 25 :
+		CopyStr("Action 4",Nama);
 		break;
 	}
 }
@@ -580,6 +588,14 @@ void GambarKartu(Kartu K,int x,int y){
 		CopyStr("|_______|",P[1]);
 		CopyStr("|       |",P[2]);
 		CopyStr("| 0 0 0 |",P[3]);
+		CopyStr("|_______|",P[4]);
+		CopyStr("|_______|",P[5]);
+		break;
+		case 25 :
+		CopyStr(" _______",P[0]);
+		CopyStr("|_______|",P[1]);
+		CopyStr("|xxxxxxx|",P[2]);
+		CopyStr("|  ROCK |",P[3]);
 		CopyStr("|_______|",P[4]);
 		CopyStr("|_______|",P[5]);
 		break;
