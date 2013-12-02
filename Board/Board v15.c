@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * */
-/* ADT Board v1.2			 					 */
+/* ADT Board v1.5			 					 */
 /* By Muntaha Ilmi 13512048  					 */
 /* Body 					 					 */
 /* Mengatur Board. Melingkupi pencetakan Board,  */
@@ -38,9 +38,71 @@ void Board_Init(int PosX,int PosY){
 	/* Win Flag */
 	Board_Win=0;
 	/* Kartu Start */
-	Board_Card_Flag[2][8]=1;
-	Board_Card_Able[2][8]=15;
 	Board_PutCard(2,8,31);
+}
+
+int Board_CekPut(int PosY, int PosX, int Stat){
+	/* Mengecek apakah kartu bisa ditaruh pada posisi tertentu */
+	/* Kode output :
+		1 = bisa ditaruh
+		0 = Posisi di luar Board
+		-1 = Posisi sudah ada kartu
+		-2 = Tidak terhubung dengan Startcard
+		-3 = Bentuk salah */
+	int a,b;
+	if ((0<=PosY)&&(PosY<=4)&&(0<=PosX)&&(PosX<=8)){
+		if (Board_Card_Open[PosY][PosX]){
+			printf("Position occupied\n");
+			return -1;
+		} else {
+			if (Board_Card_Flag[PosY][PosX]){ //Cek kartu terhubung langsung dengan start/tidak
+				a=(Stat&15)&Board_Card_Around[PosY][PosX];
+				b=(Board_Card_Able[PosY][PosX])&Board_Card_Around[PosY][PosX];
+				if (!(a^b)){ //Cek bentuk kartu, sesuai dengan kartu sekitar/tidak
+					//Bisa ditaruh
+					return 1;
+				} else {
+					printf("Wrong Shape\n");
+					return -3;
+				}
+			} else {
+				printf("Not Connected\n");
+				return -2;
+			}
+		}
+	} else {
+		printf("Position outside board\n");
+		return 0;
+	}
+}
+
+int Board_CekRock(int PosY, int PosX){
+	/* Mengecek apakah Rockfall bisa dilakukan pada posisi tertentu */
+	/* Rockfall tidak bisa dilakukan pada kartu Start, Goalcard, dan tempat kosong */
+	/* Kode output :
+		1 = bisa di-rockfall
+		0 = Posisi di luar Board
+		-1 = Posisi rockfall adalah Startcard
+		-2 = Posisi rockfall adalah Goalcard
+		-3 = Tidak ada kartu di posisi tertentu */
+	if ((0<=PosY)&&(PosY<=4)&&(0<=PosX)&&(PosX<=8)){
+		if ((PosY==2)&&(PosX==8)){
+			printf("Can't use Rockfall in Start Card\n");
+			return -1;
+		} else if (Board_Card_Open[PosY][PosX]<0){
+			printf("Can't use Rockfall in Goalcard\n");
+			return -2;
+		} else if (Board_Card_Open[PosY][PosX]==0){
+			printf("Can't use Rockfall in Empty Space\n");
+			return -3;
+		} else {
+			//Bisa di Rockfall
+			return 1;
+		}
+	} else {
+		printf("Position outside board\n");
+		return 0;
+	}
 }
 
 void Board_Print(void){
@@ -285,11 +347,12 @@ void Board_Print(void){
 	#undef facedown
 }
 
-void Board_PrintCard(int Stat, int PosY, int PosX){
+void Board_PrintCard(int PosY, int PosX, int Stat){
 	/* Cetak satu kartu, sesuai kode Stat. Lihat penjelasan diatas untuk kode Stat. */
 	/* PosX dan PosY untuk posisi kartu di Board (5x9) */
-	int a,b;
+	int a,b,i,j;
 	char tmp1,tmp2,tmp3,tmp4,tmp5,tmp6;
+	i=PosY;j=PosX;
 	PosX=PosX*9+2+Board_PosX;
 	PosY=PosY*6+2+Board_PosY;
 	#ifndef _WIN32
@@ -450,9 +513,13 @@ void Board_PrintCard(int Stat, int PosY, int PosX){
 							tmp2=border2;
 							tmp4=border2;
 							tmp5=border1;
+							if (!((Board_Card_Able[i][j]>>2)&1)){
+								tmp3=border1;
+							}
 						}
 					} else {
 						tmp1=border1;
+						tmp3=border1;
 						tmp5=border1;
 						if ((Stat>>2)&1){
 							tmp2=border2;
@@ -478,119 +545,181 @@ void Board_PrintCard(int Stat, int PosY, int PosX){
 	#undef facedown
 }
 
-int Board_Refresh(int PosY, int PosX){
-	/* Fungsi rekursif untuk mengecek kartu mana saja yang 
-	   terhubung langsung (satu komponen) dengan kartu start */
-	/* Memakai algoritma flood fill. Flag-nya Card_Able */
-	/* Untuk mengantisipasi Rockfall, sebelum dipanggil, 
-	   Card_Able, Card_Around, dan Card_Flag dikosongkan dulu. */
-	int i,tmp,tmp2,ans;
+int Board_CekGoal(void){
+	/* Mengecek apakah deadlock karena Goalcard tidak bisa dicapai 
+	   lagi sudah terjadi/belum */
+	/* Tidak mengecek apakah kartu Rockfall sudah habis/belum */
+	/*	1 = Deadlock terjadi
+		0 = Belum Deadlock */
+	int a,b,c,flag[10][15],hsl;
+	int Board_CekGoalX(int PosY, int PosX){
+		/* Fungsi rekursif dari Board_CekGoal */
+		/* Memakai algoritma flood fill. Flag-nya flag */
+		/* Untuk mengecek apakah Goalcard terhubung dengan Startcard atau tidak */
+		int i,tmp,tmp2,ans;
+		if (Board_Card_Open[PosY][PosX]==0){
+			//Jika kartu kosong, seolah terhubung dengan kartu kosong dan jalan yang terbuka di sekitar
+			tmp=((~Board_Card_Around[PosY][PosX])&15)+(Board_Card_Around[PosY][PosX]&Board_Card_Able[PosY][PosX]);
+		} else {
+			tmp=Board_Card_Open[PosY][PosX];
+		}
+		tmp=((tmp>>2)&3)+(tmp<<2);
+		tmp2=1;
+		ans=0;
+		for (i=0;i<4;i++){
+			//Cek Kartu sekitar
+			if ((0<=(PosY+Board_MoveY[i]))&&((PosY+Board_MoveY[i])<=4)&&(0<=(PosX+Board_MoveX[i]))&&((PosX+Board_MoveX[i])<=8)){
+				//Kartu berada dalam board
+				if ((tmp&tmp2)&&(!(flag[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]))){
+					//Syarat menghubungkan kartu lain : terhubung dan bukan jalan buntu
+					//Kartu kosong dianggap menghubungkan
+					//flag dipakai agar rekursif tidak pernah ke kartu sama 2x
+					flag[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=1;
+					if (Board_Card_Flag[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]){
+						//Kartu terhubung dengan Startcard, artinya Goalcard terhubung dengan Startcard
+						ans+=1;
+					} else if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]==0){
+						//Rekursif jika kartu kosong
+						ans+=Board_CekGoalX(PosY+Board_MoveY[i],PosX+Board_MoveX[i]);
+					} else if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]>15){
+						//Rekursif jika kartu bukan jalan buntu dan tidak terhubung Startcard
+						//Mengatasi kasus kartu yang putus dari startcard setelah Rockfall
+						ans+=Board_CekGoalX(PosY+Board_MoveY[i],PosX+Board_MoveX[i]);
+					}
+				}
+			}
+			tmp2<<=1;
+		}
+		return ans;
+	}
+	hsl=0;
+	for (c=0;c<3;c++){
+		if (Board_Card_Open[c*2][0]>-3){
+			//Goalcard terbuka
+			hsl+=1;
+		} else {
+			//Reset flag
+			for (a=0;a<5;a++){
+				for (b=0;b<9;b++){
+					flag[a][b]=0;
+				}
+			}
+			//Floodfill dari Goalcard
+			flag[c*2][0]=1;
+			hsl+=!(Board_CekGoalX(c*2,0));
+		}
+	}
+	return hsl;
+}
+
+int Board_Refresh(void){
+	/* Mengecek kartu mana saja yang terhubung langsung (satu komponen)
+	   dengan kartu start */
+	/* Memakai algoritma flood fill. */
+	int a,b,flag[10][15];
+	int Board_RefreshX(int PosY, int PosX){
+		/* Fungsi rekursif dari Board_Refresh */
+		/* Memakai algoritma flood fill. Flag-nya flag */
+		int i,tmp,tmp2,ans;
+		tmp=((Board_Card_Open[PosY][PosX]>>2)&3)+(Board_Card_Open[PosY][PosX]<<2);
+		tmp2=1;
+		ans=0;
+		for (i=0;i<4;i++){
+			//Cek Kartu sekitar
+			if ((0<=(PosY+Board_MoveY[i]))&&((PosY+Board_MoveY[i])<=4)&&(0<=(PosX+Board_MoveX[i]))&&((PosX+Board_MoveX[i])<=8)){
+				//Kartu berada dalam board
+				if ((tmp&tmp2)&&(!(flag[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]))){
+					//Syarat menghubungkan kartu lain: terhubung, dan penghubung bukan jalan buntu.
+					//flag dipakai agar rekursif tidak pernah ke kartu sama 2x
+					flag[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=1;
+					if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]<-2){
+						//Di sebelah Goalcard
+						Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]+=2;
+						if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]==-2){
+							//Kebuka kartu emas
+							Board_Win=1;
+						}
+					} else if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]>15){
+						//Rekursif
+						ans+=Board_RefreshX(PosY+Board_MoveY[i],PosX+Board_MoveX[i]);
+					} else if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]==0){
+						//Kartu kosong. Boleh ditaruh kartu.
+						Board_Card_Flag[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]=1;
+						ans+=1;
+					}
+				}
+			}
+			tmp2<<=1;
+		}
+		return ans;
+	}
+	for (a=0;a<5;a++){
+		for (b=0;b<9;b++){
+			Board_Card_Flag[a][b]=0;
+			flag[a][b]=0;
+		}
+	}
+	flag[2][8]=1;
+	return Board_RefreshX(2,8);
+}
+
+void Board_Reload(void){
+	/* Mengatur ulang keadaan Board setelah load game */
+	/* Board_Card_Open harus sudah terisi dengan benar (sudah di-load ulang) */
+	int i,j,k,tmp,tmp2;
+	for (i=0;i<5;i++){
+		for (j=0;j<9;j++){
+			Board_Card_Able[i][j]=0;
+			Board_Card_Around[i][j]=0;
+		}
+	}
+	for (i=0;i<5;i++){
+		for (j=0;j<9;j++){
+			if (Board_Card_Open[i][j]>0){
+				tmp=((Board_Card_Open[i][j]>>2)&3)+(Board_Card_Open[i][j]<<2);
+				tmp2=1;
+				for (k=0;k<4;k++){
+					if ((0<=(i+Board_MoveY[k]))&&((i+Board_MoveY[k])<=4)&&(0<=(j+Board_MoveX[k]))&&((j+Board_MoveX[k])<=8)){
+						Board_Card_Able[i+Board_MoveY[k]][j+Board_MoveX[k]]|=(tmp&tmp2);
+						Board_Card_Around[i+Board_MoveY[k]][j+Board_MoveX[k]]|=(tmp2);
+					}
+					tmp2<<=1;
+				}
+			}
+		}
+	}
+	tmp=Board_Refresh();
+}
+	
+void Board_PutCard(int PosY, int PosX, int Stat){
+	/* Menaruh kartu di Board. Stat berisi kode kartu yang akan ditaruh */
+	/* Tidak mengecek PosY, PosX, dan Stat */
+	/* Parameter harus memenuhi Board_CekPut dahulu agar tidak error */
+	int i,j,tmp,tmp2;
+	int a,b;
+	//Penyesuaian keadaan Board
+	Board_Card_Open[PosY][PosX]=Stat;
 	tmp=((Board_Card_Open[PosY][PosX]>>2)&3)+(Board_Card_Open[PosY][PosX]<<2);
 	tmp2=1;
-	ans=0;
 	for (i=0;i<4;i++){
-		//Cek Kartu sekitar
 		if ((0<=(PosY+Board_MoveY[i]))&&((PosY+Board_MoveY[i])<=4)&&(0<=(PosX+Board_MoveX[i]))&&((PosX+Board_MoveX[i])<=8)){
-			//Kartu berada dalam board
-			if ((tmp&tmp2)&&(!(Board_Card_Able[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]))&&((Board_Card_Open[PosY][PosX]>>4)&1)){
-				//Syarat menghubungkan kartu lain: terhubung, dan penghubung bukan jalan buntu.
-				//Board_Card_Able dipakai untuk flag agar tidak ke kartu sama 2x
-				Board_Card_Able[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp&tmp2);
-				Board_Card_Around[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp2);
-				if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]<-2){
-					//Di sebelah Goalcard
-					Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]+=2;
-					if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]==-2){
-						//Kebuka kartu emas
-						Board_Win=1;
-					}
-				} else if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]>0){
-					//Rekursif
-					ans+=Board_Refresh(PosY+Board_MoveY[i],PosX+Board_MoveX[i]);
-				} else if (Board_Card_Open[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]==0){
-					//Kartu kosong. Boleh ditaruh kartu.
-					Board_Card_Flag[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]=1;
-					ans+=1;
-				}
-			} else {
-				Board_Card_Able[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp&tmp2);
-				Board_Card_Around[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp2);
-			}
+			Board_Card_Able[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp&tmp2);
+			Board_Card_Around[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]|=(tmp2);
 		}
 		tmp2<<=1;
 	}
-	return ans;
-}
-
-boolean Board_PutCard(int PosY, int PosX, int Stat){
-	/* Menaruh kartu di Board. Stat berisi kode kartu yang akan ditaruh */
-	int i,j,tmp,tmp2;
-	int a,b;
-	if (Board_Card_Open[PosY][PosX]){
-		//printf("Position occupied\n");
-		return false;
-	} else {
-		if (Board_Card_Flag[PosY][PosX]){
-			//Cek kartu terhubung langsung dengan start/tidak
-			a=(Stat&15)&Board_Card_Around[PosY][PosX];
-			b=(Board_Card_Able[PosY][PosX])&Board_Card_Around[PosY][PosX];
-			if (!(a^b)){
-				//Cek bentuk kartu, sesuai dengan kartu sekitar/tidak
-				Board_Card_Open[PosY][PosX]=Stat;
-				//Reset semua status kartu diboard, terhubung dengan start/tidak
-				for (i=0;i<5;i++){
-					for (j=0;j<9;j++){
-						Board_Card_Able[i][j]=0;
-						Board_Card_Around[i][j]=0;
-						Board_Card_Flag[i][j]=0;
-					}
-				}
-				Board_Card_Able[2][8]=15;
-				tmp=Board_Refresh(2,8);
-				tmp2=0;
-				//Cek status goalcard.
-				if (Board_Card_Open[0][0]>-3){
-					//Terbuka
-					tmp2++;
-				} else if ((!(Board_Card_Flag[0][0]))&&(Board_Card_Around[0][0]==12)){
-					//Tidak bisa dibuka
-					//if rockfall habis
-					tmp2++;
-				}
-				if (Board_Card_Open[2][0]>-3){
-					//Terbuka
-					tmp2++;
-				} else if ((!(Board_Card_Flag[2][0]))&&(Board_Card_Around[2][0]==13)){
-					//Tidak bisa dibuka
-					//if rockfall habis
-					tmp2++;
-				}
-				if (Board_Card_Open[4][0]>-3){
-					//Terbuka
-					tmp2++;
-				} else if ((!(Board_Card_Flag[4][0]))&&(Board_Card_Around[4][0]==9)){
-					//Tidak bisa dibuka
-					//if rockfall habis
-					tmp2++;
-				}
-				if (Board_Win){
-					//Gold card terbuka
-					//???
-					printf("Gold Miner!\n");
-				} else if ((tmp==0)||(tmp2==3)){
-					//Stalemate. Tidak ada kartu yg bisa ditaruh/ Goldcard tidak bisa dicapai
-					printf("Sabotaged!\n");
-					Board_Win=-1;
-				}
-				return true;
-			} else {
-				//printf("Wrong Shape\n");
-				return false;
-			}
-		} else {
-			//printf("Not Connected\n");
-			return false;
-		}
+	//Set ulang keterhubungan kartu di Board dengan kartu start
+	tmp=Board_Refresh();
+	//Cek keadaan Goalcard
+	tmp2=Board_CekGoal();
+	if (Board_Win){
+		//Gold card terbuka
+		printf("Gold Miner!\n");
+	} else if ((tmp==0)||(tmp2==3)){
+		//if rockfall==abis
+		//Deadlock. Tidak ada kartu yg bisa ditaruh/ Goldcard tidak bisa dicapai
+		printf("Sabotaged!\n");
+		Board_Win=-1;
 	}
 }
 
@@ -605,4 +734,24 @@ int Board_Viewmap(int pos){
 		1 = Yang dilihat kartu Gold */
 	//Rumus
 	return !(Board_Card_Open[(pos-1)*2][0]%2);
+}
+
+void Board_Rockfall(int PosY, int PosX){
+	/* Menghancurkan satu kartu di Board, lalu mengatur ulang status Board */
+	/* Tidak mengecek PosY dan PosX */
+	/* Parameter harus memenuhi Board_CekRock dahulu agar tidak error */
+	int i,tmp,tmp2;
+	//Penyesuaian keadaan Board
+	tmp=((Board_Card_Open[PosY][PosX]>>2)&3)+(Board_Card_Open[PosY][PosX]<<2);
+	tmp2=1;
+	for (i=0;i<4;i++){
+		if ((0<=(PosY+Board_MoveY[i]))&&((PosY+Board_MoveY[i])<=4)&&(0<=(PosX+Board_MoveX[i]))&&((PosX+Board_MoveX[i])<=8)){
+			Board_Card_Able[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]-=(tmp&tmp2);
+			Board_Card_Around[PosY+Board_MoveY[i]][PosX+Board_MoveX[i]]-=(tmp2);
+		}
+		tmp2<<=1;
+	}
+	Board_Card_Open[PosY][PosX]=0;
+	//Cek ulang keterhubungan dengan Start card
+	tmp=Board_Refresh();
 }
