@@ -5,9 +5,7 @@
 #include "../mystring/mystring.h"
 // Bentuk susunan kartu dalam bentuk implementasi Deck
 
-#define Nil 0
-#define MaxEl 70
-#define MaxChar 10
+
 #define TOP(S) (S).TOP
 #define Jenis(K) (K).Jenis
 #define ID(K) (K).ID
