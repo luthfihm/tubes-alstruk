@@ -665,7 +665,7 @@ void GameHelp ()
 		i = 0;
 		HelpHeader();
 		while (!StrEq(help[i],"")){
-			if (StrEq(help[i],"# draw")){
+			if (StrEq(help[i],"# rockfall <koordinat y> <koordinat x>")){
 				y -= 24;
 				gotoxy(5,34);
 				printf("Press enter to next page... ");
