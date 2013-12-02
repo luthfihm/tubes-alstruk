@@ -9,7 +9,7 @@ void StartGame(ArrayofPlayer *T)
 	Dataplayer Player;
 	Deck D;
 	Kartu C;
-	int i,j,id,x,y,stat,g,ids,tmp;
+	int i,j,id,x,y,stat,g,ids,tmp,Rockfall_Counter;
 	boolean End,alert,Sudah_Ambil,Keluar_Kartu,help;
 	i = 0;
 	AcakKarakterPlayer(T);
@@ -17,6 +17,7 @@ void StartGame(ArrayofPlayer *T)
 	alert = false;
 	Sudah_Ambil = false;
 	Keluar_Kartu = false;
+	Rockfall_Counter = 2;
 	help = false;
 	CreateEmpty(&D);
 	DefaultDeck(&D);
@@ -97,6 +98,9 @@ void StartGame(ArrayofPlayer *T)
 						tmp=Board_CekPut(x-1,y-1,g);
 						if (tmp>0){
 							Board_PutCard(x-1,y-1,g);
+							if ((Board_Win==-1)&&(Rockfall_Counter)){
+								Board_Win=0;
+							}
 							Keluar_Kartu = true;
 						}else{
 							FillKartuonPlayer(T,id,C);
@@ -162,6 +166,7 @@ void StartGame(ArrayofPlayer *T)
 			}else if (TakeKartufromPlayer(T,id,"Action 4",&C)){
 				tmp=Board_CekRock(x-1,y-1);
 				if (tmp>0){
+					Rockfall_Counter--;
 					Board_Rockfall(x-1,y-1);
 					Keluar_Kartu = true;
 				}else{
@@ -311,6 +316,9 @@ void StartGame(ArrayofPlayer *T)
 					CopyStr("Anda sudah mengeluarkan kartu",pesan);
 				}else{
 					if (TakeKartufromPlayer(T,id,Card,&C)){
+						if (C.ID==25){
+							Rockfall_Counter--;
+						}
 						Keluar_Kartu = true;
 					}else{
 						alert = true;
