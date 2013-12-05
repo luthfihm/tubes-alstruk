@@ -6,7 +6,7 @@
 // Bentuk susunan kartu dalam bentuk implementasi Deck
 
 #define Nil 0
-#define MaxEl 68
+#define MaxEl 70
 #define MaxChar 10
 #define MaxGold 28
 #define TOP(S) (S).TOP

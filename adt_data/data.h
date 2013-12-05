@@ -60,6 +60,7 @@ boolean addPengguna(tabData *T, String nama, int score, time_t time);
 
 boolean delPengguna(tabData *T, String nama);
 /* Menghapus pengguna dengan nama pengguna dari tabel.
+ * Return false jika penghapusan pengguna gagal
  */
 
 void editData(tabData *T, String nama, int newScore, time_t newTime);
@@ -67,10 +68,12 @@ void editData(tabData *T, String nama, int newScore, time_t newTime);
  * F.S :score dan time milik nama diupdate menjadi newScore dan newTime
  */
  
-
+// ***** Pencetakan pengguna ke layar *****sea
 void PrintPengguna(tabData T);
+//Menampilkan nama pengguna ke layar
 
 void PrintHighScore(tabData T);
+//Menampilkan 10 pengguna dengan skor tertinggi
 
 //Procedure Sort
 void sortScoreDesc(tabData *T);
